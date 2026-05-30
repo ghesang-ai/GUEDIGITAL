@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Order — GUEDIGITAL Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- __CONFIG_INJECT__ -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f7f9fc; color: #0b1220; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 220px; background: #050814; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+    .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 0 8px 20px; font-size: 16px; font-weight: 900; color: white; letter-spacing: -.04em; }
+    .sidebar-brand-mark { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #19c8ff, #3157ff); display: grid; place-items: center; font-weight: 900; color: white; font-size: 16px; }
+    .sidebar-brand .grad { background: linear-gradient(90deg,#19c8ff,#3157ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: rgba(255,255,255,.5); font-size: 13px; font-weight: 700; text-decoration: none; transition: .2s; cursor: pointer; }
+    .nav-link:hover, .nav-link.active { background: rgba(255,255,255,.08); color: white; }
+    .nav-link .icon { font-size: 16px; }
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,.08); margin: 8px 0; }
+    .sidebar-bottom { margin-top: auto; }
+    .main { flex: 1; overflow-y: auto; }
+    .main-header { background: white; padding: 16px 28px; border-bottom: 1.5px solid #e6ebf2; display: flex; align-items: center; justify-content: space-between; }
+    .main-header h1 { font-size: 20px; font-weight: 900; letter-spacing: -.04em; }
+    .main-body { padding: 24px 28px; }
+    .filter-bar { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+    .filter-bar input, .filter-bar select { padding: 9px 14px; border-radius: 10px; border: 1.5px solid #e6ebf2; background: white; font-family: inherit; font-size: 13px; outline: none; }
+    .filter-bar input:focus, .filter-bar select:focus { border-color: #3157ff; }
+    .btn { padding: 9px 16px; border-radius: 10px; border: 0; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s; }
+    .btn-primary { background: #3157ff; color: white; }
+    .btn-ghost { background: white; border: 1.5px solid #e6ebf2; color: #344054; }
+    .table-card { background: white; border: 1.5px solid #e6ebf2; border-radius: 16px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 700; color: #667085; background: #f7f9fc; border-bottom: 1.5px solid #e6ebf2; white-space: nowrap; }
+    td { padding: 11px 14px; border-bottom: 1px solid #e6ebf2; font-size: 13px; vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    tr:hover td { background: #f7f9fc; }
+    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .status-badge.paid, .status-badge.success { background: rgba(22,199,132,.12); color: #16c784; }
+    .status-badge.pending, .status-badge.processing { background: rgba(255,159,28,.12); color: #ff9f1c; }
+    .status-badge.failed, .status-badge.expired { background: rgba(255,77,109,.12); color: #ff4d6d; }
+    .action-btn { padding: 5px 10px; border-radius: 8px; border: 1.5px solid #e6ebf2; background: white; font-size: 11px; font-weight: 700; cursor: pointer; margin-right: 4px; transition: .2s; }
+    .action-btn:hover { background: #f0f4f8; }
+    .pagination { display: flex; gap: 8px; padding: 14px 16px; border-top: 1.5px solid #e6ebf2; align-items: center; font-size: 13px; }
+    .page-btn { padding: 6px 12px; border-radius: 8px; border: 1.5px solid #e6ebf2; background: white; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .page-btn.active { background: #3157ff; border-color: #3157ff; color: white; }
+  </style>
+</head>
+<body>
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-mark">G</div>
+      <span class="grad">GUEDIGITAL</span>
+    </div>
+    <a class="nav-link" href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-link active" href="/admin/orders.html"><span class="icon">📋</span> Order</a>
+    <a class="nav-link" href="/admin/products.html"><span class="icon">🎮</span> Produk</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-bottom">
+      <a class="nav-link" href="/"><span class="icon">🏠</span> Lihat Toko</a>
+      <div class="nav-link" onclick="if(_sbAdmin)_sbAdmin.auth.signOut().then(()=>window.location.href='/')">
+        <span class="icon">🚪</span> Keluar
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h1>📋 Kelola Order</h1>
+      <button class="btn btn-primary" onclick="loadAllOrders()">🔄 Refresh</button>
+    </div>
+
+    <div class="main-body">
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <input type="text" id="filter-search" placeholder="🔍 Cari order code..." style="width:220px"
+               oninput="loadAllOrders({ search: this.value, status: document.getElementById('filter-status').value })">
+        <select id="filter-status"
+                onchange="loadAllOrders({ status: this.value, search: document.getElementById('filter-search').value })">
+          <option value="">Semua Status</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="failed">Failed</option>
+          <option value="expired">Expired</option>
+        </select>
+        <button class="btn btn-ghost" onclick="exportCSV()">⬇️ Export CSV</button>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Order Code</th>
+              <th>Produk</th>
+              <th>User ID / Target</th>
+              <th>Total</th>
+              <th>Bayar</th>
+              <th>Fulfillment</th>
+              <th>Waktu</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr><td colspan="8" style="text-align:center;padding:40px;color:#667085">Memuat data...</td></tr>
+          </tbody>
+        </table>
+        <div class="pagination" id="pagination-info">
+          <span style="color:#667085">Memuat...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/admin/admin.js" defer></script>
+<script>
+  // Override loadAllOrders untuk halaman ini dengan kolom Aksi
+  async function loadAllOrders(filters = {}) {
+    const tbody = document.getElementById('orders-tbody');
+    const paginasi = document.getElementById('pagination-info');
+    if (!tbody) return;
+
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#667085">Memuat data...</td></tr>';
+
+    try {
+      let query = _sbAdmin.from('orders').select('*', { count: 'exact' })
+        .order('created_at', { ascending: false }).limit(50);
+
+      if (filters.status) query = query.eq('payment_status', filters.status);
+      if (filters.search) query = query.ilike('order_code', `%${filters.search}%`);
+
+      const { data: orders, count, error } = await query;
+      if (error) throw error;
+
+      if (paginasi) paginasi.innerHTML = `<span style="color:#667085">Menampilkan ${orders?.length || 0} dari ${count || 0} order</span>`;
+
+      if (!orders?.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#667085">Tidak ada order yang sesuai filter.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td><code style="font-size:11px;background:#f0f4f8;padding:3px 8px;border-radius:6px;cursor:pointer"
+               onclick="navigator.clipboard.writeText('${o.order_code}')" title="Klik untuk salin">${o.order_code}</code></td>
+          <td>
+            <div style="font-weight:700;font-size:13px">${escHtml(o.product_name)}</div>
+            <div style="font-size:11px;color:#667085">${escHtml(o.nominal_label)}</div>
+          </td>
+          <td style="font-size:12px;color:#344054">${escHtml(o.target_id || '-')}</td>
+          <td style="font-weight:800">${fRp(o.total)}</td>
+          <td><span class="status-badge ${o.payment_status}">${o.payment_status}</span></td>
+          <td><span class="status-badge ${o.fulfillment_status}">${o.fulfillment_status}</span></td>
+          <td style="font-size:11px;color:#667085;white-space:nowrap">${fTgl(o.created_at)}</td>
+          <td>
+            ${o.fulfillment_status === 'processing' ? `<button class="action-btn" onclick="tandaiOrderSukses(${o.id})" style="color:#16c784;border-color:#16c784">✓ Sukses</button>` : ''}
+            ${o.contact ? `<button class="action-btn" onclick="kirimUlangNotif(${o.id})" title="Kirim ulang WA">📱</button>` : ''}
+          </td>
+        </tr>`).join('');
+
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:#ff4d6d">Gagal memuat data. Coba refresh.</td></tr>';
+    }
+  }
+
+  // Export data ke CSV
+  async function exportCSV() {
+    const { data: orders } = await _sbAdmin.from('orders').select('*').order('created_at', { ascending: false }).limit(1000);
+    if (!orders?.length) return alert('Tidak ada data untuk diexport.');
+
+    const header = ['Order Code','Produk','Nominal','User ID','Kontak','Total','Pembayaran','Fulfillment','Waktu'].join(',');
+    const rows = orders.map(o => [
+      o.order_code, o.product_name, o.nominal_label, o.target_id || '', o.contact || '',
+      o.total, o.payment_status, o.fulfillment_status, o.created_at
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url;
+    a.download = `guedigital-orders-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>

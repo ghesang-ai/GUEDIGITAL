@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Produk — GUEDIGITAL Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- __CONFIG_INJECT__ -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f7f9fc; color: #0b1220; }
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 220px; background: #050814; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+    .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 0 8px 20px; font-size: 16px; font-weight: 900; color: white; }
+    .sidebar-brand-mark { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #19c8ff, #3157ff); display: grid; place-items: center; font-weight: 900; color: white; font-size: 16px; }
+    .sidebar-brand .grad { background: linear-gradient(90deg,#19c8ff,#3157ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+    .nav-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: rgba(255,255,255,.5); font-size: 13px; font-weight: 700; text-decoration: none; transition: .2s; cursor: pointer; }
+    .nav-link:hover, .nav-link.active { background: rgba(255,255,255,.08); color: white; }
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,.08); margin: 8px 0; }
+    .sidebar-bottom { margin-top: auto; }
+    .main { flex: 1; overflow-y: auto; }
+    .main-header { background: white; padding: 16px 28px; border-bottom: 1.5px solid #e6ebf2; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .main-header h1 { font-size: 20px; font-weight: 900; letter-spacing: -.04em; }
+    .main-body { padding: 24px 28px; }
+    .btn { padding: 9px 16px; border-radius: 10px; border: 0; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s; }
+    .btn-primary { background: #3157ff; color: white; }
+    .btn-ghost { background: white; border: 1.5px solid #e6ebf2; color: #344054; }
+    .btn-danger { background: #ff4d6d; color: white; }
+
+    /* Product cards grid */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .prod-card { background: white; border: 1.5px solid #e6ebf2; border-radius: 16px; overflow: hidden; }
+    .prod-card-head { padding: 16px; border-bottom: 1.5px solid #e6ebf2; display: flex; align-items: center; justify-content: space-between; }
+    .prod-card-info { display: flex; align-items: center; gap: 12px; }
+    .prod-icon { font-size: 32px; width: 52px; height: 52px; background: #f0f4f8; border-radius: 12px; display: grid; place-items: center; }
+    .prod-name { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .prod-cat { font-size: 11px; background: #eef3fb; color: #3157ff; padding: 2px 8px; border-radius: 6px; font-weight: 700; display: inline-block; }
+
+    /* Toggle switch */
+    .toggle { position: relative; width: 40px; height: 22px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: #e6ebf2; border-radius: 999px; transition: .2s; cursor: pointer; }
+    .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    .toggle input:checked + .toggle-slider { background: #16c784; }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+    /* Nominal table inside card */
+    .nom-table { width: 100%; }
+    .nom-table th { padding: 8px 16px; font-size: 11px; font-weight: 700; color: #667085; text-align: left; background: #f7f9fc; }
+    .nom-table td { padding: 10px 16px; font-size: 13px; border-top: 1px solid #f0f4f8; vertical-align: middle; }
+    .stock-low { color: #ff4d6d; font-weight: 800; }
+    .stock-ok { color: #16c784; font-weight: 800; }
+
+    /* Edit price inline */
+    .price-input { width: 90px; padding: 4px 8px; border-radius: 8px; border: 1.5px solid #e6ebf2; font-family: inherit; font-size: 12px; font-weight: 700; }
+    .price-input:focus { border-color: #3157ff; outline: none; }
+
+    /* Upload modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; place-items: center; }
+    .modal-overlay.open { display: grid; }
+    .modal-box { background: white; border-radius: 20px; padding: 24px; width: 460px; max-width: 95vw; }
+    .modal-title { font-size: 17px; font-weight: 900; margin-bottom: 16px; }
+    textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #e6ebf2; font-family: monospace; font-size: 13px; resize: vertical; min-height: 120px; outline: none; }
+    textarea:focus { border-color: #3157ff; }
+  </style>
+</head>
+<body>
+
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-mark">G</div>
+      <span class="grad">GUEDIGITAL</span>
+    </div>
+    <a class="nav-link" href="/admin/index.html"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-link" href="/admin/orders.html"><span class="icon">📋</span> Order</a>
+    <a class="nav-link active" href="/admin/products.html"><span class="icon">🎮</span> Produk</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-bottom">
+      <a class="nav-link" href="/"><span class="icon">🏠</span> Lihat Toko</a>
+      <div class="nav-link" onclick="if(_sbAdmin)_sbAdmin.auth.signOut().then(()=>window.location.href='/')">
+        <span class="icon">🚪</span> Keluar
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="main-header">
+      <h1>🎮 Kelola Produk & Stok</h1>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" onclick="bukaModalUploadVoucher()">📥 Upload Voucher</button>
+        <button class="btn btn-primary" onclick="loadAdminProducts()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <div class="main-body">
+      <div id="admin-products-list" class="products-grid">
+        <!-- Diisi oleh loadAdminProducts() -->
+        <div style="height:200px;background:white;border-radius:16px;border:1.5px solid #e6ebf2;display:grid;place-items:center;color:#667085">Memuat produk...</div>
+        <div style="height:200px;background:white;border-radius:16px;border:1.5px solid #e6ebf2;display:grid;place-items:center;color:#667085">Memuat produk...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Upload Voucher -->
+<div class="modal-overlay" id="modal-voucher">
+  <div class="modal-box">
+    <h2 class="modal-title">📥 Upload Kode Voucher</h2>
+    <p style="font-size:13px;color:#667085;margin-bottom:12px">
+      Masukkan satu kode per baris. Kode akan ditambahkan ke stok nominal yang dipilih.
+    </p>
+    <div style="margin-bottom:12px">
+      <label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:6px">Pilih Nominal</label>
+      <select id="voucher-nominal-id" style="width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #e6ebf2;font-family:inherit;font-size:13px;outline:none">
+        <option value="">— Pilih nominal —</option>
+      </select>
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="font-size:12px;font-weight:700;color:#344054;display:block;margin-bottom:6px">Kode Voucher (1 per baris)</label>
+      <textarea id="voucher-codes-input" placeholder="XXXX-YYYY-ZZZZ&#10;AAAA-BBBB-CCCC&#10;..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="tutupModalVoucher()">Batal</button>
+      <button class="btn btn-primary" onclick="simpanVoucherCodes()">💾 Simpan Kode</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="/admin/admin.js" defer></script>
+<script>
+  // Override renderAdminProducts untuk tampilan grid yang lebih detail
+  async function loadAdminProducts() {
+    const list = document.getElementById('admin-products-list');
+    if (!list) return;
+    list.innerHTML = '<div style="height:200px;background:white;border-radius:16px;border:1.5px solid #e6ebf2;display:grid;place-items:center;color:#667085">Memuat...</div>';
+
+    const { data: produk } = await _sbAdmin.from('products').select('*, nominals(*)').order('sort_order');
+    if (!produk?.length) { list.innerHTML = '<p style="color:#667085">Belum ada produk.</p>'; return; }
+
+    // Isi dropdown nominal untuk upload voucher
+    const sel = document.getElementById('voucher-nominal-id');
+    if (sel) {
+      sel.innerHTML = '<option value="">— Pilih nominal —</option>' +
+        produk.flatMap(p => (p.nominals || []).map(n =>
+          `<option value="${n.id}">${p.name} — ${n.label} (${fRp(n.price)})</option>`
+        )).join('');
+    }
+
+    list.innerHTML = produk.map(p => `
+      <div class="prod-card">
+        <div class="prod-card-head">
+          <div class="prod-card-info">
+            <div class="prod-icon">${p.icon || '🎮'}</div>
+            <div>
+              <div class="prod-name">${escHtml(p.name)}</div>
+              <div class="prod-cat">${p.category}</div>
+            </div>
+          </div>
+          <label class="toggle" title="${p.is_active ? 'Aktif' : 'Nonaktif'}">
+            <input type="checkbox" ${p.is_active ? 'checked' : ''} onchange="toggleProdukAktif(${p.id}, this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <table class="nom-table">
+          <thead>
+            <tr>
+              <th>Nominal</th>
+              <th>Harga Jual</th>
+              <th>Stok</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${(p.nominals || []).sort((a,b) => a.sort_order - b.sort_order).map(n => `
+              <tr>
+                <td style="font-weight:700">${escHtml(n.label)}</td>
+                <td>
+                  <input type="number" class="price-input" value="${n.price}"
+                         onblur="updateHargaNominal(${n.id}, this.value)"
+                         title="Klik untuk edit harga">
+                </td>
+                <td class="${n.stock < 10 ? 'stock-low' : 'stock-ok'}">${n.stock}</td>
+                <td>
+                  <label class="toggle" style="width:32px;height:18px">
+                    <input type="checkbox" ${n.is_active ? 'checked' : ''} onchange="toggleNominalAktif(${n.id}, this.checked)">
+                    <span class="toggle-slider" style="border-radius:999px"></span>
+                  </label>
+                </td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`).join('');
+  }
+
+  // Update harga nominal
+  async function updateHargaNominal(nominalId, newPrice) {
+    const harga = parseInt(newPrice);
+    if (isNaN(harga) || harga < 0) { showAdminToast('Harga tidak valid.', 'error'); return; }
+
+    const { error } = await _sbAdmin.from('nominals').update({ price: harga }).eq('id', nominalId);
+    if (error) showAdminToast('Gagal update harga.', 'error');
+    else showAdminToast('Harga diperbarui ✓', 'success');
+  }
+
+  // Toggle aktif nominal
+  async function toggleNominalAktif(nominalId, isActive) {
+    const { error } = await _sbAdmin.from('nominals').update({ is_active: isActive }).eq('id', nominalId);
+    if (error) showAdminToast('Gagal mengubah status nominal.', 'error');
+    else showAdminToast(isActive ? 'Nominal diaktifkan' : 'Nominal dinonaktifkan', 'success');
+  }
+
+  // Modal upload voucher
+  function bukaModalUploadVoucher() { document.getElementById('modal-voucher').classList.add('open'); }
+  function tutupModalVoucher() { document.getElementById('modal-voucher').classList.remove('open'); }
+
+  // Simpan kode voucher ke DB
+  async function simpanVoucherCodes() {
+    const nominalId = document.getElementById('voucher-nominal-id').value;
+    const rawCodes = document.getElementById('voucher-codes-input').value;
+
+    if (!nominalId) { showAdminToast('Pilih nominal terlebih dahulu.', 'error'); return; }
+
+    const kodes = rawCodes.split('\n')
+      .map(c => c.trim())
+      .filter(c => c.length > 0);
+
+    if (!kodes.length) { showAdminToast('Tidak ada kode yang valid.', 'error'); return; }
+
+    const rows = kodes.map(code => ({ nominal_id: parseInt(nominalId), code }));
+    const { error } = await _sbAdmin.from('voucher_codes').insert(rows);
+
+    if (error) {
+      showAdminToast('Gagal menyimpan: ' + error.message, 'error');
+    } else {
+      showAdminToast(`✓ ${kodes.length} kode berhasil disimpan!`, 'success');
+      document.getElementById('voucher-codes-input').value = '';
+      tutupModalVoucher();
+      loadAdminProducts();
+    }
+  }
+
+  // Tutup modal jika klik overlay
+  document.getElementById('modal-voucher')?.addEventListener('click', function(e) {
+    if (e.target === this) tutupModalVoucher();
+  });
+</script>
+</body>
+</html>

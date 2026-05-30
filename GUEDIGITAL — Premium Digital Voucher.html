@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GUEDIGITAL — Premium Digital Voucher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f9fc;
+  --dark:#050814;
+  --ink:#0b1220;
+  --muted:#667085;
+  --soft:#eef3fb;
+  --line:#e6ebf2;
+  --card:#ffffff;
+  --cyan:#19c8ff;
+  --blue:#3157ff;
+  --violet:#7c3cff;
+  --green:#16c784;
+  --orange:#ff9f1c;
+  --red:#ff4d6d;
+  --shadow:0 24px 80px rgba(15,23,42,.10);
+  --shadow2:0 14px 38px rgba(15,23,42,.08);
+  --radius:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font-family:inherit}
+img{max-width:100%}
+
+/* ── NAV ── */
+.nav-wrap{position:sticky;top:14px;z-index:100;padding:14px 0 0}
+.nav-inner{width:min(1200px,calc(100% - 36px));margin:0 auto}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:11px 14px;
+  border:1px solid rgba(255,255,255,.75);
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(24px);
+  border-radius:999px;
+  box-shadow:0 18px 50px rgba(15,23,42,.09);
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:900;letter-spacing:-.04em;cursor:pointer}
+.brand-mark{
+  width:40px;height:40px;border-radius:14px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--cyan),var(--blue),var(--violet));
+  color:white;font-size:18px;font-weight:900;
+  box-shadow:0 10px 28px rgba(49,87,255,.28);
+}
+.brand .digital{background:linear-gradient(90deg,var(--blue),var(--cyan));-webkit-background-clip:text;color:transparent}
+.nav-links{display:flex;gap:24px;color:#475467;font-weight:700;font-size:14px}
+.nav-links a{cursor:pointer;transition:.15s}
+.nav-links a:hover{color:var(--blue)}
+.nav-links a.active{color:var(--blue)}
+.nav-actions{display:flex;gap:8px}
+.btn{
+  border:0;padding:11px 18px;border-radius:999px;
+  font-weight:800;font-size:14px;cursor:pointer;
+  transition:.2s ease;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{color:#344054;background:#fff;border:1px solid var(--line);box-shadow:none}
+.btn.primary{color:white;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 14px 32px rgba(49,87,255,.26)}
+.btn.dark{color:white;background:#101828;box-shadow:0 12px 28px rgba(16,24,40,.18)}
+.btn.danger{color:white;background:linear-gradient(135deg,var(--red),#ff8c69)}
+.btn.success{color:white;background:linear-gradient(135deg,var(--green),#4de8b0)}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none;min-height:calc(100vh - 88px)}
+.page.active{display:block}
+.container{width:min(1200px,calc(100% - 36px));margin:0 auto}
+
+/* ── MOBILE WRAP ── */
+.mobile-wrap{
+  max-width:420px;margin:0 auto;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(25,200,255,.14),transparent 30%),
+    radial-gradient(circle at 92% 8%,rgba(124,60,255,.10),transparent 32%),
+    linear-gradient(180deg,#fff 0%,var(--bg) 40%,#eef3fb 100%);
+  min-height:calc(100vh - 88px);
+  padding:0 0 90px;
+}
+.mobile-wrap.no-nav{padding-bottom:0}
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:min(420px,100%);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--line);
+  display:flex;justify-content:space-around;
+  padding:10px 0 18px;
+  z-index:90;
+}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;padding:4px 16px;border-radius:16px;transition:.2s;
+  color:#98a8b8;font-size:11px;font-weight:700;
+}
+.bn-item svg{width:22px;height:22px;stroke-width:1.8}
+.bn-item.active{color:var(--blue)}
+.bn-item:active{transform:scale(.93)}
+
+/* ── HOME PAGE ── */
+.hero-banner{
+  margin:16px 16px 0;
+  border-radius:26px;overflow:hidden;
+  background:linear-gradient(135deg,#3157ff 0%,#19c8ff 55%,#7c3cff 100%);
+  padding:22px;min-height:170px;position:relative;
+}
+.hero-banner::after{
+  content:"";position:absolute;
+  width:200px;height:200px;border-radius:50%;
+  right:-50px;top:-60px;border:1px solid rgba(255,255,255,.22);
+}
+.hero-banner::before{
+  content:"";position:absolute;
+  width:120px;height:120px;border-radius:50%;
+  right:30px;top:-20px;background:rgba(255,255,255,.10);
+}
+.hero-tag{
+  display:inline-flex;padding:6px 12px;border-radius:999px;
+  background:rgba(255,255,255,.18);color:white;
+  font-size:11px;font-weight:900;letter-spacing:.5px;margin-bottom:12px;
+}
+.hero-banner h2{font-size:28px;font-weight:900;letter-spacing:-.06em;color:white;line-height:1.05;margin-bottom:8px}
+.hero-banner p{color:rgba(255,255,255,.78);font-size:13px;margin-bottom:16px}
+.hero-cta{
+  display:inline-flex;padding:10px 16px;background:white;
+  color:#101828;border-radius:999px;font-weight:900;font-size:12px;
+  cursor:pointer;border:none;
+}
+.slide-dots{display:flex;justify-content:center;gap:6px;padding:12px 0 4px}
+.sdot{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.sdot.on{width:20px;border-radius:3px;background:var(--blue)}
+
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  margin:0 16px 4px;
+  background:white;border:1.5px solid var(--line);
+  border-radius:18px;padding:0 14px;
+  box-shadow:var(--shadow2);
+}
+.search-bar svg{width:18px;height:18px;stroke:var(--muted);flex-shrink:0}
+.search-bar input{
+  flex:1;border:none;outline:none;padding:13px 0;
+  font-size:14px;color:var(--ink);background:transparent;
+}
+.search-bar input::placeholder{color:#b4c0d2}
+
+.cat-scroll{
+  display:flex;gap:8px;padding:12px 16px 8px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.cat-scroll::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;padding:8px 16px;border-radius:999px;
+  font-size:12px;font-weight:800;cursor:pointer;
+  border:1.5px solid var(--line);background:white;color:#475467;
+  transition:.2s;white-space:nowrap;
+}
+.chip.on{background:var(--blue);color:white;border-color:var(--blue);box-shadow:0 8px 22px rgba(49,87,255,.26)}
+
+.sec-header{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 12px}
+.sec-header h3{font-size:17px;font-weight:900;letter-spacing:-.04em}
+.sec-header a{color:var(--blue);font-size:13px;font-weight:800;cursor:pointer}
+
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}
+.pcard{
+  background:white;border:1.5px solid #f0f4f8;border-radius:22px;
+  padding:13px;box-shadow:var(--shadow2);cursor:pointer;transition:.2s;
+}
+.pcard:active{transform:scale(.97)}
+.pcard-img{
+  height:90px;border-radius:16px;display:grid;place-items:center;
+  font-size:34px;margin-bottom:11px;position:relative;
+  background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.6),transparent 40%),
+    linear-gradient(135deg,#eaf7ff,#edf0ff);
+}
+.pbadge{
+  position:absolute;top:8px;left:8px;
+  padding:4px 8px;border-radius:999px;
+  background:#101828;color:white;font-size:10px;font-weight:900;
+}
+.pbadge.hot{background:linear-gradient(135deg,var(--red),#ff8c69)}
+.pbadge.new{background:linear-gradient(135deg,var(--green),#4de8b0);color:#050814}
+.pbadge.sale{background:linear-gradient(135deg,var(--orange),#ffd26b);color:#050814}
+.pcard h4{font-size:14px;font-weight:800;letter-spacing:-.03em;margin-bottom:2px}
+.pcard small{color:var(--muted);font-size:11px;display:block;margin-bottom:8px}
+.pcard .price{color:var(--blue);font-size:13px;font-weight:900}
+
+.featured-strip{
+  margin:0 16px 12px;background:white;border:1.5px solid var(--line);
+  border-radius:20px;padding:14px 16px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;
+  box-shadow:var(--shadow2);transition:.2s;
+}
+.featured-strip:active{transform:scale(.98)}
+.feat-icon{
+  width:46px;height:46px;border-radius:15px;
+  display:grid;place-items:center;font-size:22px;flex-shrink:0;
+  background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.6),transparent 40%),
+    linear-gradient(135deg,#eaf7ff,#edf0ff);
+}
+.feat-info{flex:1}
+.feat-info h4{font-size:14px;font-weight:800;letter-spacing:-.03em;margin-bottom:2px}
+.feat-info p{font-size:12px;color:var(--muted);margin-bottom:4px}
+.feat-info .price{color:var(--blue);font-size:12px;font-weight:900}
+.feat-arrow{color:#b4c0d2}
+
+.trust-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin:8px 16px 20px;gap:10px;
+}
+.trust-card{
+  background:white;border:1.5px solid #f0f4f8;border-radius:18px;
+  padding:14px 8px;text-align:center;box-shadow:var(--shadow2);
+}
+.trust-card .t-icon{font-size:20px;margin-bottom:6px}
+.trust-card .t-val{font-size:13px;font-weight:900;color:var(--ink);margin-bottom:2px}
+.trust-card .t-lbl{font-size:10px;color:var(--muted);font-weight:700;line-height:1.3}
+
+/* ── PRODUCT DETAIL PAGE ── */
+.detail-header{
+  background:linear-gradient(135deg,#3157ff 0%,#19c8ff 60%,#7c3cff 100%);
+  padding:20px 16px 28px;position:relative;overflow:hidden;
+}
+.detail-header::after{
+  content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+  right:-40px;top:-50px;border:1px solid rgba(255,255,255,.18);
+}
+.detail-back{
+  display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85);
+  font-size:14px;font-weight:700;cursor:pointer;margin-bottom:20px;
+}
+.detail-back svg{width:20px;height:20px}
+.detail-icon{font-size:52px;margin-bottom:12px}
+.detail-header h2{font-size:26px;font-weight:900;letter-spacing:-.05em;color:white;margin-bottom:4px}
+.detail-header p{color:rgba(255,255,255,.78);font-size:13px}
+
+.detail-body{padding:0 16px;margin-top:-8px}
+.nominal-label{font-size:15px;font-weight:800;letter-spacing:-.03em;margin:20px 0 12px}
+.nominal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.nom-card{
+  background:white;border:2px solid var(--line);border-radius:18px;
+  padding:14px;text-align:center;cursor:pointer;transition:.2s;
+}
+.nom-card:active{transform:scale(.96)}
+.nom-card.selected{border-color:var(--blue);background:#f0f4ff;box-shadow:0 0 0 4px rgba(49,87,255,.12)}
+.nom-card .nom-val{font-size:16px;font-weight:900;letter-spacing:-.04em;color:var(--ink)}
+.nom-card .nom-price{font-size:13px;color:var(--blue);font-weight:800;margin-top:4px}
+.nom-card .nom-save{font-size:10px;color:var(--green);font-weight:700;margin-top:3px}
+
+.input-section h4{font-size:15px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+.input-field{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:14px;
+}
+.input-field label{font-size:13px;font-weight:700;color:#344054}
+.input-field input,.input-field select{
+  border:1.5px solid var(--line);border-radius:14px;
+  padding:13px 14px;font-size:14px;color:var(--ink);
+  outline:none;background:white;transition:.2s;width:100%;
+}
+.input-field input:focus,.input-field select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(49,87,255,.10)}
+.input-field .helper{font-size:12px;color:var(--muted)}
+
+.summary-box{
+  background:
+    radial-gradient(circle at 80% 0%,rgba(25,200,255,.22),transparent 32%),
+    linear-gradient(135deg,#070b14,#101828);
+  border-radius:22px;padding:18px;margin:20px 0;color:white;
+}
+.sum-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);
+  font-size:14px;font-weight:700;
+}
+.sum-row:last-of-type{border:none}
+.sum-row span{color:#8fa3c0}
+.sum-row b{color:white}
+.sum-total{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px;background:white;border-radius:16px;margin-top:12px;
+}
+.sum-total small{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:2px}
+.sum-total strong{font-size:24px;font-weight:900;letter-spacing:-.05em;color:var(--ink)}
+
+.pay-methods{display:grid;gap:10px;margin:16px 0 20px}
+.pay-item{
+  display:flex;align-items:center;gap:14px;
+  background:white;border:2px solid var(--line);border-radius:16px;padding:14px;
+  cursor:pointer;transition:.2s;
+}
+.pay-item.selected{border-color:var(--blue);background:#f0f4ff}
+.pay-item .pay-icon{font-size:24px;width:42px;text-align:center}
+.pay-item .pay-info h5{font-size:14px;font-weight:800;margin-bottom:2px}
+.pay-item .pay-info p{font-size:12px;color:var(--muted)}
+.pay-item .check{
+  margin-left:auto;width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--line);display:grid;place-items:center;
+}
+.pay-item.selected .check{background:var(--blue);border-color:var(--blue)}
+
+.cta-bar-fixed{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:min(420px,100%);
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(18px);
+  padding:14px 16px 28px;
+  border-top:1px solid var(--line);z-index:89;
+}
+.cta-bar-fixed .btn-full{
+  width:100%;padding:16px;border-radius:18px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:white;border:none;font-size:15px;font-weight:900;
+  cursor:pointer;letter-spacing:-.02em;
+  box-shadow:0 14px 32px rgba(49,87,255,.28);
+  transition:.2s;
+}
+.cta-bar-fixed .btn-full:active{transform:scale(.97)}
+
+/* ── CHECKOUT PAGE ── */
+.checkout-header{
+  background:
+    radial-gradient(circle at 80% 0%,rgba(25,200,255,.22),transparent 32%),
+    linear-gradient(135deg,#070b14,#101828);
+  padding:20px 16px 28px;color:white;
+}
+.checkout-step{
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
+}
+.step-dot{
+  width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;font-size:12px;font-weight:900;
+  background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);
+}
+.step-dot.done{background:var(--green);color:white}
+.step-dot.active{background:white;color:var(--blue)}
+.step-line{flex:1;height:1px;background:rgba(255,255,255,.12)}
+
+.order-card{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);
+  border-radius:20px;padding:16px;
+}
+.order-card .product-row{display:flex;align-items:center;gap:14px}
+.order-card .prod-icon{font-size:34px;width:56px;height:56px;background:rgba(255,255,255,.10);border-radius:14px;display:grid;place-items:center}
+.order-card h4{font-size:16px;font-weight:900;letter-spacing:-.04em;color:white;margin-bottom:4px}
+.order-card p{font-size:13px;color:#8fa3c0}
+
+.checkout-body{padding:16px}
+.section-title{font-size:16px;font-weight:900;letter-spacing:-.04em;margin-bottom:14px;color:var(--ink)}
+.info-card{
+  background:white;border:1.5px solid var(--line);border-radius:18px;
+  padding:16px;margin-bottom:16px;box-shadow:var(--shadow2);
+}
+.info-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;
+}
+.info-row:last-child{border:none;padding-bottom:0}
+.info-row span{color:var(--muted);font-weight:600}
+.info-row b{font-weight:800;color:var(--ink)}
+
+.qris-box{
+  background:
+    radial-gradient(circle at 80% 0%,rgba(25,200,255,.18),transparent 32%),
+    linear-gradient(135deg,#070b14,#101828);
+  border-radius:22px;padding:20px;text-align:center;margin-bottom:16px;
+}
+.qris-frame{
+  width:190px;height:190px;background:white;border-radius:16px;
+  margin:0 auto 16px;display:grid;place-items:center;padding:14px;
+}
+.qris-pattern{
+  width:100%;height:100%;
+  background-image:
+    repeating-linear-gradient(0deg,#101828 0,#101828 4px,transparent 4px,transparent 10px),
+    repeating-linear-gradient(90deg,#101828 0,#101828 4px,transparent 4px,transparent 10px);
+  border-radius:6px;opacity:.85;
+}
+.qris-timer{color:#19c8ff;font-size:13px;font-weight:800}
+.qris-total{font-size:28px;font-weight:900;letter-spacing:-.06em;color:white;margin:8px 0 4px}
+.qris-label{color:#8fa3c0;font-size:13px;font-weight:700}
+
+.steps-list{background:white;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:20px}
+.step-item{
+  display:flex;align-items:flex-start;gap:14px;padding:14px 16px;
+  border-bottom:1px solid var(--line);
+}
+.step-item:last-child{border:none}
+.step-num{
+  width:30px;height:30px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;font-size:13px;font-weight:900;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;
+}
+.step-item h5{font-size:14px;font-weight:800;margin-bottom:3px}
+.step-item p{font-size:12px;color:var(--muted)}
+
+/* ── ORDER SUCCESS PAGE ── */
+.success-page{padding:0 16px 100px;text-align:center}
+.success-anim{
+  width:100%;padding:40px 0 24px;display:flex;flex-direction:column;align-items:center;
+}
+.success-circle{
+  width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),#4de8b0);
+  display:grid;place-items:center;margin-bottom:20px;
+  box-shadow:0 18px 50px rgba(22,199,132,.32);
+}
+.success-circle svg{width:44px;height:44px;stroke:white;stroke-width:2.5}
+.success-page h2{font-size:26px;font-weight:900;letter-spacing:-.05em;margin-bottom:8px}
+.success-page .sub{color:var(--muted);font-size:14px;line-height:1.65;max-width:300px;margin:0 auto 28px}
+
+.voucher-box{
+  background:
+    radial-gradient(circle at 80% 0%,rgba(25,200,255,.22),transparent 32%),
+    linear-gradient(135deg,#070b14,#101828);
+  border-radius:24px;padding:22px;margin-bottom:16px;text-align:left;
+  position:relative;overflow:hidden;
+}
+.voucher-box::before{content:"";position:absolute;width:160px;height:160px;border-radius:50%;right:-40px;bottom:-50px;border:1px solid rgba(255,255,255,.08)}
+.voucher-label{font-size:12px;color:#8fa3c0;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.voucher-code{
+  font-size:22px;font-weight:900;letter-spacing:.12em;color:white;
+  background:rgba(25,200,255,.12);border:1px solid rgba(25,200,255,.25);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;
+  font-variant-numeric:tabular-nums;
+}
+.copy-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 16px;background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.15);border-radius:999px;
+  color:white;font-size:12px;font-weight:800;cursor:pointer;
+  transition:.2s;
+}
+.copy-btn:active{transform:scale(.95)}
+
+.detail-grid{background:white;border:1.5px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:16px}
+.dg-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;
+}
+.dg-row:last-child{border:none}
+.dg-row span{color:var(--muted);font-weight:600}
+.dg-row b{font-weight:800}
+
+/* ── HISTORY PAGE ── */
+.history-header{padding:20px 16px 16px}
+.history-header h2{font-size:24px;font-weight:900;letter-spacing:-.05em;margin-bottom:4px}
+.history-header p{color:var(--muted);font-size:13px}
+.history-filter{display:flex;gap:8px;padding:0 16px 16px;overflow-x:auto;scrollbar-width:none}
+.history-filter::-webkit-scrollbar{display:none}
+.order-card-item{
+  background:white;border:1.5px solid var(--line);border-radius:20px;
+  margin:0 16px 12px;padding:16px;cursor:pointer;transition:.2s;
+  box-shadow:var(--shadow2);
+}
+.order-card-item:active{transform:scale(.98)}
+.order-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.order-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:linear-gradient(135deg,#eaf7ff,#edf0ff);flex-shrink:0}
+.order-info h4{font-size:15px;font-weight:800;letter-spacing:-.03em;margin-bottom:3px}
+.order-info p{font-size:12px;color:var(--muted)}
+.order-status{margin-left:auto;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:900}
+.status-success{background:rgba(22,199,132,.12);color:var(--green)}
+.status-pending{background:rgba(255,159,28,.12);color:var(--orange)}
+.status-fail{background:rgba(255,77,109,.12);color:var(--red)}
+.order-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:12px;border-top:1px solid var(--line);font-size:13px;
+}
+.order-bottom .amount{font-size:16px;font-weight:900;letter-spacing:-.04em;color:var(--blue)}
+.order-bottom .repeat{color:var(--blue);font-size:12px;font-weight:800;cursor:pointer}
+
+/* ── ACCOUNT PAGE ── */
+.account-header{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(25,200,255,.18),transparent 30%),
+    linear-gradient(180deg,#050814,#0d1828);
+  padding:24px 16px 80px;color:white;
+}
+.profile-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.avatar{
+  width:64px;height:64px;border-radius:22px;
+  background:linear-gradient(135deg,var(--cyan),var(--blue),var(--violet));
+  display:grid;place-items:center;font-size:24px;font-weight:900;color:white;flex-shrink:0;
+}
+.profile-info h3{font-size:20px;font-weight:900;letter-spacing:-.04em;margin-bottom:4px}
+.profile-info p{color:#8fa3c0;font-size:13px}
+.balance-card{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:18px;
+}
+.bal-label{font-size:12px;color:#8fa3c0;font-weight:700;margin-bottom:6px}
+.bal-amount{font-size:32px;font-weight:900;letter-spacing:-.06em;color:white;margin-bottom:12px}
+.bal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bal-btn{
+  padding:11px;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;
+  border:none;transition:.2s;
+}
+.bal-btn.topup{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white}
+.bal-btn.wd{background:rgba(255,255,255,.10);color:white;border:1px solid rgba(255,255,255,.14)}
+
+.account-body{padding:16px;margin-top:-46px}
+.menu-card{background:white;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow2)}
+.menu-item{
+  display:flex;align-items:center;gap:14px;padding:16px;
+  border-bottom:1px solid var(--line);cursor:pointer;transition:.15s;
+}
+.menu-item:last-child{border:none}
+.menu-item:active{background:#f8fafc}
+.menu-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.menu-item h5{font-size:14px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+.menu-item p{font-size:12px;color:var(--muted)}
+.menu-arrow{margin-left:auto;color:#d0d5dd}
+.section-label{font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:0 16px 10px}
+
+/* ── RESPONSIVE ── */
+@media(min-width:480px){
+  .mobile-wrap{border-radius:0;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .bottom-nav{border-left:1px solid var(--line);border-right:1px solid var(--line)}
+}
+@media(max-width:700px){
+  .nav-links{display:none}
+  .nav-actions .ghost{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <nav class="nav">
+      <div class="brand" onclick="goPage('home')">
+        <div class="brand-mark">G</div>
+        <span>GUE<span class="digital">DIGITAL</span></span>
+      </div>
+      <div class="nav-links">
+        <a onclick="goPage('home')" id="nl-home" class="active">Beranda</a>
+        <a onclick="goPage('history')" id="nl-history">Riwayat</a>
+        <a onclick="goPage('account')" id="nl-account">Akun</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn ghost" onclick="goPage('account')">Login</button>
+        <button class="btn primary" onclick="goPage('home')">Top Up</button>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: HOME
+════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="mobile-wrap">
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-tag">⚡ PROMO SPESIAL</div>
+      <h2>Double Diamond<br>Mobile Legends</h2>
+      <p>Top up sekarang, diamond 2× lipat hingga akhir bulan!</p>
+      <button class="hero-cta" onclick="openProduct('Mobile Legends','⚔️','Diamond & Starlight',19000)">Top Up Sekarang</button>
+    </div>
+    <div class="slide-dots">
+      <div class="sdot"></div><div class="sdot on"></div><div class="sdot"></div><div class="sdot"></div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input placeholder="Cari game, voucher, gift card..."/>
+    </div>
+
+    <!-- Categories -->
+    <div class="cat-scroll">
+      <div class="chip on" onclick="filterCat(this)">Semua</div>
+      <div class="chip" onclick="filterCat(this)">Mobile Game</div>
+      <div class="chip" onclick="filterCat(this)">Gift Card</div>
+      <div class="chip" onclick="filterCat(this)">Console</div>
+      <div class="chip" onclick="filterCat(this)">Streaming</div>
+    </div>
+
+    <!-- Popular Games -->
+    <div class="sec-header">
+      <h3>Top Up Game</h3>
+      <a>Lihat semua</a>
+    </div>
+    <div class="product-grid">
+      <div class="pcard" onclick="openProduct('Mobile Legends','⚔️','Diamond & Starlight',19000)">
+        <div class="pcard-img"><span class="pbadge hot">HOT</span>⚔️</div>
+        <h4>Mobile Legends</h4>
+        <small>Diamond & Starlight</small>
+        <div class="price">Mulai Rp1.900</div>
+      </div>
+      <div class="pcard" onclick="openProduct('Free Fire','🔫','Diamond & Member',14000)">
+        <div class="pcard-img"><span class="pbadge hot">HOT</span>🔫</div>
+        <h4>Free Fire</h4>
+        <small>Diamond & Member</small>
+        <div class="price">Mulai Rp1.400</div>
+      </div>
+      <div class="pcard" onclick="openProduct('PUBG Mobile','🪖','UC & Royale Pass',28000)">
+        <div class="pcard-img"><span class="pbadge new">NEW</span>🪖</div>
+        <h4>PUBG Mobile</h4>
+        <small>UC & Royale Pass</small>
+        <div class="price">Mulai Rp2.800</div>
+      </div>
+      <div class="pcard" onclick="openProduct('Honkai Star Rail','🌌','Oneiric Shard',15000)">
+        <div class="pcard-img"><span class="pbadge new">NEW</span>🌌</div>
+        <h4>Honkai Star Rail</h4>
+        <small>Oneiric Shard</small>
+        <div class="price">Mulai Rp15.000</div>
+      </div>
+    </div>
+
+    <!-- Gift Cards -->
+    <div class="sec-header">
+      <h3>Gift Card</h3>
+      <a>Lihat semua</a>
+    </div>
+    <div class="product-grid">
+      <div class="pcard" onclick="openProduct('iTunes Gift Card','🎵','App Store · USD',85000)">
+        <div class="pcard-img"><span class="pbadge sale">SALE</span>🎵</div>
+        <h4>iTunes Gift Card</h4>
+        <small>App Store · USD</small>
+        <div class="price">Mulai Rp85.000</div>
+      </div>
+      <div class="pcard" onclick="openProduct('Google Play','▶️','Gift Card IDR',27000)">
+        <div class="pcard-img">▶️</div>
+        <h4>Google Play</h4>
+        <small>Gift Card IDR</small>
+        <div class="price">Mulai Rp27.000</div>
+      </div>
+    </div>
+
+    <!-- Console & PC -->
+    <div class="sec-header">
+      <h3>Console & PC</h3>
+      <a>Lihat semua</a>
+    </div>
+    <div class="featured-strip" onclick="openProduct('PlayStation Store','🎮','PSN Wallet IDR',55000)">
+      <div class="feat-icon">🎮</div>
+      <div class="feat-info">
+        <h4>PlayStation Store</h4>
+        <p>PSN Wallet IDR — instan</p>
+        <div class="price">Mulai Rp55.000</div>
+      </div>
+      <svg class="feat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+    <div class="featured-strip" onclick="openProduct('Steam Wallet','🖥️','Steam Wallet Code IDR',53000)">
+      <div class="feat-icon">🖥️</div>
+      <div class="feat-info">
+        <h4>Steam Wallet Code</h4>
+        <p>IDR & USD tersedia</p>
+        <div class="price">Mulai Rp53.000</div>
+      </div>
+      <svg class="feat-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+    </div>
+
+    <!-- Trust -->
+    <div class="trust-grid">
+      <div class="trust-card"><div class="t-icon">⚡</div><div class="t-val">Instan</div><div class="t-lbl">Kirim otomatis</div></div>
+      <div class="trust-card"><div class="t-icon">🔒</div><div class="t-val">Aman</div><div class="t-lbl">SSL enkripsi</div></div>
+      <div class="trust-card"><div class="t-icon">💬</div><div class="t-val">24/7</div><div class="t-lbl">CS aktif</div></div>
+      <div class="trust-card"><div class="t-icon">⭐</div><div class="t-val">50K+</div><div class="t-lbl">Transaksi</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: PRODUCT DETAIL
+════════════════════════════════ -->
+<div id="page-detail" class="page">
+  <div class="mobile-wrap">
+    <div class="detail-header">
+      <div class="detail-back" onclick="goPage('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali
+      </div>
+      <div class="detail-icon" id="det-icon">⚔️</div>
+      <h2 id="det-name">Mobile Legends</h2>
+      <p id="det-sub">Diamond & Starlight</p>
+    </div>
+
+    <div class="detail-body">
+      <div class="nominal-label">Pilih Nominal</div>
+      <div class="nominal-grid" id="nominal-grid"></div>
+
+      <div class="input-section">
+        <h4>Data Akun</h4>
+        <div class="input-field">
+          <label>User ID / Game ID</label>
+          <input id="user-id-input" type="text" placeholder="Masukkan User ID kamu"/>
+          <div class="helper">Bisa dilihat di profil game kamu</div>
+        </div>
+        <div class="input-field" id="server-field">
+          <label>Server</label>
+          <select id="server-select">
+            <option value="">Pilih Server</option>
+            <option>(6257) Indonesia</option>
+            <option>(6258) Malaysia</option>
+            <option>(6259) Thailand</option>
+            <option>(6260) Philippines</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label>WhatsApp / Email</label>
+          <input type="text" placeholder="Untuk notifikasi order"/>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="sum-row"><span>Produk</span><b id="sum-product">—</b></div>
+        <div class="sum-row"><span>Nominal</span><b id="sum-nominal">Belum dipilih</b></div>
+        <div class="sum-row"><span>Harga</span><b id="sum-price">—</b></div>
+        <div class="sum-row"><span>Biaya Admin</span><b>Rp1.000</b></div>
+        <div class="sum-total">
+          <div><small>Total Bayar</small><strong id="sum-total">—</strong></div>
+          <div style="color:var(--green);font-size:12px;font-weight:900">✓ Stok tersedia</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-bar-fixed">
+      <button class="btn-full" onclick="goCheckout()">Lanjut Pembayaran →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: CHECKOUT
+════════════════════════════════ -->
+<div id="page-checkout" class="page">
+  <div class="mobile-wrap">
+    <div class="checkout-header">
+      <div class="detail-back" onclick="goPage('detail')" style="margin-bottom:18px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali
+      </div>
+      <div class="checkout-step">
+        <div class="step-dot done">✓</div>
+        <div class="step-line"></div>
+        <div class="step-dot active">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot">3</div>
+      </div>
+      <div class="order-card">
+        <div class="product-row">
+          <div class="prod-icon" id="co-icon">⚔️</div>
+          <div>
+            <h4 id="co-name">Mobile Legends</h4>
+            <p id="co-nominal">86 Diamond</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-body">
+      <div class="section-title">Detail Order</div>
+      <div class="info-card">
+        <div class="info-row"><span>Produk</span><b id="co2-name">—</b></div>
+        <div class="info-row"><span>Nominal</span><b id="co2-nominal">—</b></div>
+        <div class="info-row"><span>User ID</span><b id="co2-uid">—</b></div>
+        <div class="info-row"><span>Server</span><b>(6257) Indonesia</b></div>
+        <div class="info-row"><span>Harga</span><b id="co2-price">—</b></div>
+        <div class="info-row"><span>Biaya Admin</span><b>Rp1.000</b></div>
+        <div class="info-row" style="border:none"><span>Total</span><b id="co2-total" style="color:var(--blue);font-size:16px">—</b></div>
+      </div>
+
+      <div class="section-title">Pilih Metode Bayar</div>
+      <div class="pay-methods">
+        <div class="pay-item selected" onclick="selectPay(this)">
+          <div class="pay-icon">📱</div>
+          <div class="pay-info"><h5>QRIS</h5><p>Scan & bayar — semua e-wallet</p></div>
+          <div class="check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+        </div>
+        <div class="pay-item" onclick="selectPay(this)">
+          <div class="pay-icon">🏦</div>
+          <div class="pay-info"><h5>Virtual Account</h5><p>BCA · Mandiri · BRI · BNI</p></div>
+          <div class="check"></div>
+        </div>
+        <div class="pay-item" onclick="selectPay(this)">
+          <div class="pay-icon">💳</div>
+          <div class="pay-info"><h5>GoPay / OVO / DANA</h5><p>Direct e-wallet payment</p></div>
+          <div class="check"></div>
+        </div>
+        <div class="pay-item" onclick="selectPay(this)">
+          <div class="pay-icon">💰</div>
+          <div class="pay-info"><h5>Saldo GUEDIGITAL</h5><p>Saldo: Rp0</p></div>
+          <div class="check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-bar-fixed">
+      <button class="btn-full" onclick="goPage('payment')">Bayar Sekarang →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: PAYMENT (QRIS)
+════════════════════════════════ -->
+<div id="page-payment" class="page">
+  <div class="mobile-wrap">
+    <div class="checkout-header">
+      <div class="detail-back" onclick="goPage('checkout')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali
+      </div>
+      <div class="checkout-step" style="margin-bottom:0">
+        <div class="step-dot done">✓</div>
+        <div class="step-line"></div>
+        <div class="step-dot done">✓</div>
+        <div class="step-line"></div>
+        <div class="step-dot active">3</div>
+      </div>
+    </div>
+
+    <div class="checkout-body">
+      <div class="qris-box">
+        <div class="qris-label">Scan QR untuk membayar</div>
+        <div class="qris-total" id="pay-total">Rp22.900</div>
+        <div class="qris-label" style="margin-bottom:16px">Total Pembayaran</div>
+        <div class="qris-frame">
+          <div class="qris-pattern"></div>
+        </div>
+        <div class="qris-timer" id="pay-timer">⏱ Berlaku: 14:59</div>
+      </div>
+
+      <div class="section-title">Cara Pembayaran</div>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div><h5>Buka aplikasi e-wallet</h5><p>GoPay, OVO, DANA, ShopeePay, atau kamera HP kamu</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div><h5>Scan QR Code di atas</h5><p>Pastikan nominal sudah sesuai sebelum konfirmasi</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div><h5>Konfirmasi pembayaran</h5><p>Masukkan PIN atau konfirmasi di aplikasimu</p></div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div><h5>Order diproses otomatis</h5><p>Diamond/kode akan dikirim dalam 1–3 menit</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-bar-fixed">
+      <button class="btn-full" onclick="goPage('success')" style="background:linear-gradient(135deg,var(--green),#4de8b0)">Saya Sudah Bayar ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: SUCCESS
+════════════════════════════════ -->
+<div id="page-success" class="page">
+  <div class="mobile-wrap">
+    <div class="success-page">
+      <div class="success-anim">
+        <div class="success-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>Pembayaran Berhasil!</h2>
+        <p class="sub">Order kamu sedang diproses. Diamond akan masuk ke akun dalam 1–3 menit.</p>
+      </div>
+
+      <div class="voucher-box">
+        <div class="voucher-label">Order ID</div>
+        <div style="color:#19c8ff;font-size:18px;font-weight:900;letter-spacing:.05em;margin-bottom:14px">#GUE-20251029-8821</div>
+        <div class="voucher-label">Status</div>
+        <div style="color:var(--green);font-size:15px;font-weight:900;margin-bottom:14px">✓ Sukses — diamond terkirim</div>
+        <div class="voucher-label">Transaksi</div>
+        <div style="color:white;font-size:15px;font-weight:800">Mobile Legends — 86 Diamond</div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="dg-row"><span>Produk</span><b id="suc-prod">Mobile Legends</b></div>
+        <div class="dg-row"><span>Nominal</span><b id="suc-nom">86 Diamond</b></div>
+        <div class="dg-row"><span>User ID</span><b id="suc-uid">12345678</b></div>
+        <div class="dg-row"><span>Total Bayar</span><b id="suc-total" style="color:var(--blue)">Rp22.900</b></div>
+        <div class="dg-row"><span>Metode</span><b>QRIS</b></div>
+        <div class="dg-row"><span>Waktu</span><b id="suc-time"></b></div>
+      </div>
+
+      <div style="display:grid;gap:10px;margin-top:8px;padding-bottom:80px">
+        <button class="btn primary" style="width:100%;padding:15px;border-radius:16px;font-size:15px" onclick="goPage('home')">Top Up Lagi</button>
+        <button class="btn ghost" style="width:100%;padding:15px;border-radius:16px;font-size:15px" onclick="goPage('history')">Lihat Riwayat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: HISTORY
+════════════════════════════════ -->
+<div id="page-history" class="page">
+  <div class="mobile-wrap">
+    <div class="history-header">
+      <h2>Riwayat Order</h2>
+      <p>Semua transaksi kamu tersimpan di sini</p>
+    </div>
+    <div class="history-filter">
+      <div class="chip on" onclick="filterCat(this)">Semua</div>
+      <div class="chip" onclick="filterCat(this)">Sukses</div>
+      <div class="chip" onclick="filterCat(this)">Pending</div>
+      <div class="chip" onclick="filterCat(this)">Gagal</div>
+    </div>
+
+    <!-- Order items -->
+    <div class="order-card-item" onclick="goPage('success')">
+      <div class="order-top">
+        <div class="order-icon">⚔️</div>
+        <div class="order-info">
+          <h4>Mobile Legends</h4>
+          <p>86 Diamond · 29 Okt 2025 · 20:37</p>
+        </div>
+        <div class="order-status status-success">Sukses</div>
+      </div>
+      <div class="order-bottom">
+        <div class="amount">Rp22.900</div>
+        <div class="repeat" onclick="event.stopPropagation();openProduct('Mobile Legends','⚔️','Diamond & Starlight',19000)">Top Up Lagi →</div>
+      </div>
+    </div>
+
+    <div class="order-card-item">
+      <div class="order-top">
+        <div class="order-icon">🎵</div>
+        <div class="order-info">
+          <h4>iTunes Gift Card</h4>
+          <p>USD 10 · 28 Okt 2025 · 15:12</p>
+        </div>
+        <div class="order-status status-success">Sukses</div>
+      </div>
+      <div class="order-bottom">
+        <div class="amount">Rp168.000</div>
+        <div class="repeat" onclick="openProduct('iTunes Gift Card','🎵','App Store · USD',85000)">Beli Lagi →</div>
+      </div>
+    </div>
+
+    <div class="order-card-item">
+      <div class="order-top">
+        <div class="order-icon">🔫</div>
+        <div class="order-info">
+          <h4>Free Fire</h4>
+          <p>140 Diamond · 25 Okt 2025 · 11:44</p>
+        </div>
+        <div class="order-status status-success">Sukses</div>
+      </div>
+      <div class="order-bottom">
+        <div class="amount">Rp27.000</div>
+        <div class="repeat" onclick="openProduct('Free Fire','🔫','Diamond & Member',14000)">Top Up Lagi →</div>
+      </div>
+    </div>
+
+    <div class="order-card-item">
+      <div class="order-top">
+        <div class="order-icon">🪖</div>
+        <div class="order-info">
+          <h4>PUBG Mobile</h4>
+          <p>60 UC · 22 Okt 2025 · 09:20</p>
+        </div>
+        <div class="order-status status-pending">Pending</div>
+      </div>
+      <div class="order-bottom">
+        <div class="amount">Rp28.000</div>
+        <div class="repeat" style="color:var(--orange)">Menunggu...</div>
+      </div>
+    </div>
+
+    <div class="order-card-item">
+      <div class="order-top">
+        <div class="order-icon">🖥️</div>
+        <div class="order-info">
+          <h4>Steam Wallet</h4>
+          <p>Rp50.000 · 18 Okt 2025 · 21:55</p>
+        </div>
+        <div class="order-status status-fail">Gagal</div>
+      </div>
+      <div class="order-bottom">
+        <div class="amount">Rp53.000</div>
+        <div class="repeat" style="color:var(--red)">Refund diproses</div>
+      </div>
+    </div>
+
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     PAGE: ACCOUNT
+════════════════════════════════ -->
+<div id="page-account" class="page">
+  <div class="mobile-wrap">
+    <div class="account-header">
+      <div class="profile-row">
+        <div class="avatar">G</div>
+        <div class="profile-info">
+          <h3>Ghesang P.</h3>
+          <p>ghesang@guedigital.id</p>
+        </div>
+      </div>
+      <div class="balance-card">
+        <div class="bal-label">SALDO GUEDIGITAL</div>
+        <div class="bal-amount">Rp0</div>
+        <div class="bal-actions">
+          <button class="bal-btn topup">+ Top Up Saldo</button>
+          <button class="bal-btn wd">Tarik Dana</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-body">
+      <div class="section-label" style="padding-top:0">Transaksi</div>
+      <div class="menu-card">
+        <div class="menu-item" onclick="goPage('history')">
+          <div class="menu-icon" style="background:#eef3ff">📋</div>
+          <div><h5>Riwayat Order</h5><p>Lihat semua transaksi kamu</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#fff0f3">🎁</div>
+          <div><h5>Voucher & Promo</h5><p>Kode diskon yang tersedia</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#f0fff8">🔔</div>
+          <div><h5>Notifikasi</h5><p>Status order via WA & email</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </div>
+
+      <div class="section-label">Pengaturan</div>
+      <div class="menu-card">
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#eef3ff">👤</div>
+          <div><h5>Edit Profil</h5><p>Nama, email, nomor HP</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#fffbf0">🔐</div>
+          <div><h5>Keamanan Akun</h5><p>Password, PIN, 2FA</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#f5f3ff">💬</div>
+          <div><h5>Bantuan & CS</h5><p>WhatsApp support 24/7</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon" style="background:#fff0f3">🚪</div>
+          <div><h5>Keluar</h5><p>Logout dari akun ini</p></div>
+          <svg class="menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:20px 0 80px">
+        <div style="font-size:12px;color:var(--muted);font-weight:600">GUEDIGITAL v1.0.0</div>
+        <div style="font-size:11px;color:#b4c0d2;margin-top:4px">Platform Digital Voucher Premium</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottom-nav">
+  <div class="bn-item active" id="bn-home" onclick="goPage('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Beranda
+  </div>
+  <div class="bn-item" id="bn-history" onclick="goPage('history')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+    Riwayat
+  </div>
+  <div class="bn-item" id="bn-account" onclick="goPage('account')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    Akun
+  </div>
+</div>
+
+<script>
+// ── State ──
+var state = {
+  product: 'Mobile Legends',
+  icon: '⚔️',
+  sub: 'Diamond & Starlight',
+  basePrice: 19000,
+  selectedNom: null,
+  nominals: []
+};
+
+// Nominals per product
+var nominalData = {
+  'Mobile Legends': [
+    {val:'86 💎',price:19000,save:''},
+    {val:'172 💎',price:36000,save:'Hemat 5%'},
+    {val:'257 💎',price:52000,save:''},
+    {val:'514 💎',price:98000,save:'Hemat 8%'},
+    {val:'1.048 💎',price:188000,save:'Hemat 12%'},
+    {val:'Starlight',price:42000,save:''},
+  ],
+  'Free Fire': [
+    {val:'70 💎',price:14000,save:''},
+    {val:'140 💎',price:27000,save:''},
+    {val:'355 💎',price:65000,save:'Hemat 7%'},
+    {val:'720 💎',price:125000,save:'Hemat 10%'},
+    {val:'Member ×1',price:35000,save:''},
+    {val:'Member ×2',price:65000,save:'Hemat 7%'},
+  ],
+  'PUBG Mobile': [
+    {val:'60 UC',price:28000,save:''},
+    {val:'125 UC',price:55000,save:''},
+    {val:'325 UC',price:138000,save:''},
+    {val:'660 UC',price:275000,save:'Hemat 5%'},
+    {val:'Royale Pass',price:185000,save:''},
+  ],
+  'Honkai Star Rail': [
+    {val:'60 Oneiric',price:15000,save:''},
+    {val:'330 Oneiric',price:78000,save:''},
+    {val:'680 Oneiric',price:158000,save:'Hemat 5%'},
+    {val:'1380 Oneiric',price:315000,save:'Hemat 8%'},
+  ],
+  'iTunes Gift Card': [
+    {val:'USD 5',price:85000,save:''},
+    {val:'USD 10',price:168000,save:'Hemat 3%'},
+    {val:'USD 25',price:410000,save:'Hemat 5%'},
+    {val:'USD 50',price:800000,save:'Hemat 6%'},
+    {val:'USD 100',price:1550000,save:'Hemat 8%'},
+  ],
+  'Google Play': [
+    {val:'Rp25.000',price:27000,save:''},
+    {val:'Rp50.000',price:53000,save:''},
+    {val:'Rp100.000',price:105000,save:''},
+    {val:'Rp200.000',price:208000,save:''},
+  ],
+  'PlayStation Store': [
+    {val:'Rp50.000',price:55000,save:''},
+    {val:'Rp100.000',price:108000,save:''},
+    {val:'Rp200.000',price:212000,save:''},
+    {val:'Rp500.000',price:520000,save:''},
+  ],
+  'Steam Wallet': [
+    {val:'Rp50.000',price:53000,save:''},
+    {val:'Rp100.000',price:105000,save:''},
+    {val:'USD 5',price:84000,save:''},
+    {val:'USD 10',price:165000,save:'Hemat 3%'},
+    {val:'USD 20',price:325000,save:'Hemat 4%'},
+  ],
+};
+
+function fmt(n){return 'Rp'+n.toLocaleString('id-ID')}
+
+// ── Page navigation ──
+function goPage(p){
+  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
+  var pg = document.getElementById('page-'+p);
+  if(pg) pg.classList.add('active');
+
+  // Bottom nav active state
+  var hiddenPages = ['detail','checkout','payment','success'];
+  document.getElementById('bottom-nav').style.display = hiddenPages.indexOf(p)>-1 ? 'none' : 'flex';
+
+  // Update nav links
+  ['home','history','account'].forEach(function(k){
+    var el = document.getElementById('nl-'+k);
+    if(el) el.classList.toggle('active', k===p);
+    var bn = document.getElementById('bn-'+k);
+    if(bn) bn.classList.toggle('active', k===p);
+  });
+
+  // Fill page-specific data
+  if(p==='success'){
+    var now = new Date();
+    var ts = now.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}) + ' ' + now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    var el;
+    if((el=document.getElementById('suc-prod'))) el.textContent = state.product;
+    if((el=document.getElementById('suc-nom'))) el.textContent = state.selectedNom ? state.selectedNom.val : '86 Diamond';
+    if((el=document.getElementById('suc-uid'))) el.textContent = document.getElementById('user-id-input')&&document.getElementById('user-id-input').value || '12345678';
+    if((el=document.getElementById('suc-total'))) el.textContent = state.selectedNom ? fmt(state.selectedNom.price+1000) : fmt(state.basePrice+1000);
+    if((el=document.getElementById('suc-time'))) el.textContent = ts;
+  }
+  if(p==='payment'){
+    var tot = state.selectedNom ? fmt(state.selectedNom.price+1000) : fmt(state.basePrice+1000);
+    var el;
+    if((el=document.getElementById('pay-total'))) el.textContent = tot;
+    startTimer();
+  }
+  window.scrollTo(0,0);
+}
+
+// ── Open product detail ──
+function openProduct(name, icon, sub, base){
+  state.product = name;
+  state.icon = icon;
+  state.sub = sub;
+  state.basePrice = base;
+  state.selectedNom = null;
+
+  document.getElementById('det-icon').textContent = icon;
+  document.getElementById('det-name').textContent = name;
+  document.getElementById('det-sub').textContent = sub;
+  document.getElementById('sum-product').textContent = name;
+  document.getElementById('sum-nominal').textContent = 'Belum dipilih';
+  document.getElementById('sum-price').textContent = '—';
+  document.getElementById('sum-total').textContent = '—';
+
+  // Server field: hide for gift cards
+  var giftCards = ['iTunes Gift Card','Google Play','PlayStation Store','Steam Wallet'];
+  document.getElementById('server-field').style.display = giftCards.indexOf(name) > -1 ? 'none' : 'flex';
+
+  // Fill nominals
+  var noms = nominalData[name] || [];
+  var grid = document.getElementById('nominal-grid');
+  grid.innerHTML = '';
+  noms.forEach(function(n, i){
+    var d = document.createElement('div');
+    d.className = 'nom-card' + (i===0 ? ' selected' : '');
+    d.innerHTML = '<div class="nom-val">'+n.val+'</div><div class="nom-price">'+fmt(n.price)+'</div>' + (n.save ? '<div class="nom-save">'+n.save+'</div>' : '');
+    d.onclick = function(){
+      document.querySelectorAll('.nom-card').forEach(function(c){c.classList.remove('selected')});
+      d.classList.add('selected');
+      state.selectedNom = n;
+      document.getElementById('sum-nominal').textContent = n.val;
+      document.getElementById('sum-price').textContent = fmt(n.price);
+      document.getElementById('sum-total').textContent = fmt(n.price + 1000);
+    };
+    grid.appendChild(d);
+    if(i===0){ state.selectedNom = n; document.getElementById('sum-nominal').textContent = n.val; document.getElementById('sum-price').textContent = fmt(n.price); document.getElementById('sum-total').textContent = fmt(n.price+1000);}
+  });
+
+  goPage('detail');
+}
+
+// ── Checkout ──
+function goCheckout(){
+  if(!state.selectedNom){ alert('Pilih nominal dulu ya!'); return; }
+  var uid = document.getElementById('user-id-input').value;
+  if(!uid){ alert('Masukkan User ID kamu!'); return; }
+
+  var setEl = function(id, val){ var e = document.getElementById(id); if(e) e.textContent = val; };
+  setEl('co-icon', state.icon);
+  setEl('co-name', state.product);
+  setEl('co-nominal', state.selectedNom.val);
+  setEl('co2-name', state.product);
+  setEl('co2-nominal', state.selectedNom.val);
+  setEl('co2-uid', uid || '12345678');
+  setEl('co2-price', fmt(state.selectedNom.price));
+  setEl('co2-total', fmt(state.selectedNom.price + 1000));
+  goPage('checkout');
+}
+
+// ── Payment method select ──
+function selectPay(el){
+  document.querySelectorAll('.pay-item').forEach(function(i){
+    i.classList.remove('selected');
+    var c = i.querySelector('.check');
+    if(c) c.innerHTML = '';
+  });
+  el.classList.add('selected');
+  var chk = el.querySelector('.check');
+  if(chk) chk.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>';
+}
+
+// ── Category filter chips ──
+function filterCat(el){
+  var parent = el.closest('.cat-scroll, .history-filter');
+  if(!parent) return;
+  parent.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on')});
+  el.classList.add('on');
+}
+
+// ── QRIS timer countdown ──
+var timerInterval = null;
+function startTimer(){
+  if(timerInterval) clearInterval(timerInterval);
+  var secs = 15*60 - 1;
+  function tick(){
+    var m = Math.floor(secs/60), s = secs%60;
+    var el = document.getElementById('pay-timer');
+    if(el) el.textContent = '⏱ Berlaku: '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(secs<=0){ clearInterval(timerInterval); return; }
+    secs--;
+  }
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+// Init
+goPage('home');
+</script>
+</body>
+</html>

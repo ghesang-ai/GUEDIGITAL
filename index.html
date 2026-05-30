@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GUEDIGITAL — Voucher Game & Gift Card Premium</title>
+  <meta name="description" content="Top up game dan beli gift card digital dengan cepat, aman, dan harga terbaik.">
+  <meta name="theme-color" content="#3157ff">
+  <meta property="og:title" content="GUEDIGITAL — Voucher Game & Gift Card">
+  <meta property="og:description" content="Top up Mobile Legends, Free Fire, PUBG, iTunes, Google Play, dan lebih banyak lagi.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+
+  <!-- Config diinject oleh Netlify Edge Function -->
+  <!-- __CONFIG_INJECT__ -->
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===================== PAGE: HOME ===================== -->
+  <div id="page-home" class="page active">
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+      <div class="nav-pill">
+        <div class="brand" onclick="navigate('#home')">
+          <div class="brand-mark">G</div>
+          <span class="txt-grad">GUEDIGITAL</span>
+        </div>
+        <div class="nav-actions">
+          <!-- Tombol login (tampil jika belum login) -->
+          <button id="btn-login-nav" class="btn btn-primary btn-sm" onclick="navigate('#login')">
+            Masuk
+          </button>
+          <!-- User chip (tampil jika sudah login) -->
+          <div id="user-chip-nav" onclick="navigate('#account')" style="display:none">
+            <div class="user-avatar-sm" id="nav-user-initial">U</div>
+            <span id="nav-user-name">User</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-badge">⚡ Promo Terbatas</div>
+      <h1 class="hero-title">Top Up <span class="txt-grad">Lebih Hemat</span><br>Proses Instan!</h1>
+      <p class="hero-sub">Diamond, UC, Gift Card & lebih banyak lagi.<br>Harga terbaik, transaksi aman.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-sm" onclick="document.getElementById('search-input').focus()">
+          Cari Game →
+        </button>
+        <button class="btn btn-sm" style="color:white;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)">
+          Lihat Promo
+        </button>
+      </div>
+      <div class="hero-dots">
+        <div class="hero-dot active"></div>
+        <div class="hero-dot"></div>
+        <div class="hero-dot"></div>
+        <div class="hero-dot"></div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-wrap">
+      <div class="search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <input type="search" id="search-input" class="search-bar"
+             placeholder="Cari game, gift card, voucher..." autocomplete="off">
+    </div>
+
+    <!-- Promo Strip -->
+    <div class="promo-strip">
+      <div class="promo-strip-icon">🎁</div>
+      <div class="promo-strip-text">
+        <h4>Gratis Biaya Admin untuk member baru!</h4>
+        <p>Daftar sekarang dan nikmati transaksi pertama tanpa biaya tambahan</p>
+      </div>
+    </div>
+
+    <!-- Category Chips -->
+    <div class="cats-scroll">
+      <div class="chip active" data-cat="all">🎯 Semua</div>
+      <div class="chip" data-cat="game">🎮 Mobile Game</div>
+      <div class="chip" data-cat="gift_card">🎁 Gift Card</div>
+      <div class="chip" data-cat="console">🖥️ Console & PC</div>
+    </div>
+
+    <!-- Section: Mobile Games -->
+    <div id="section-game" class="container">
+      <div class="section-hdr">
+        <h2>🎮 Mobile Games</h2>
+        <span class="see-all">Lihat Semua</span>
+      </div>
+      <div class="product-grid" id="grid-game">
+        <!-- Diisi oleh loadHomeProducts() -->
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+      </div>
+    </div>
+
+    <!-- Section: Gift Card -->
+    <div id="section-gift" class="container">
+      <div class="section-hdr">
+        <h2>🎁 Gift Card Digital</h2>
+        <span class="see-all">Lihat Semua</span>
+      </div>
+      <div class="product-grid" id="grid-gift">
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+        <div class="skeleton" style="height:160px;border-radius:18px"></div>
+      </div>
+    </div>
+
+    <!-- Section: Console & PC -->
+    <div id="section-feat" class="container">
+      <div class="section-hdr">
+        <h2>🖥️ Console & PC</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="list-featured">
+        <div class="skeleton" style="height:80px;border-radius:18px"></div>
+        <div class="skeleton" style="height:80px;border-radius:18px"></div>
+      </div>
+    </div>
+
+    <!-- Trust Grid -->
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-label">Instan</div>
+        <div class="trust-sub">< 3 Menit</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🔒</div>
+        <div class="trust-label">Aman</div>
+        <div class="trust-sub">SSL + 2FA</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🕐</div>
+        <div class="trust-label">24/7</div>
+        <div class="trust-sub">Online Terus</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">👥</div>
+        <div class="trust-label">50K+</div>
+        <div class="trust-sub">Pelanggan</div>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+  </div>
+  <!-- /page-home -->
+
+
+  <!-- ===================== PAGE: DETAIL ===================== -->
+  <div id="page-detail" class="page no-bottom-nav">
+
+    <!-- Dark gradient header -->
+    <div class="dark-header">
+      <div class="page-header" style="padding:0 0 16px">
+        <button class="back-btn" onclick="history.back()" aria-label="Kembali">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+        <h1 style="color:white">Detail Produk</h1>
+      </div>
+
+      <div style="text-align:center;padding:8px 0 4px">
+        <div id="det-icon" style="font-size:60px;margin-bottom:12px">🎮</div>
+        <h2 id="det-name" style="font-size:22px;font-weight:900;color:white;letter-spacing:-.04em;margin-bottom:6px">-</h2>
+        <p id="det-sub" style="font-size:13px;color:rgba(255,255,255,.6)">-</p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:20px">
+
+      <!-- Target ID -->
+      <div id="uid-field" class="field-wrap">
+        <label class="field-label" for="uid-input">
+          🆔 User ID / Username
+        </label>
+        <div class="field-sub">Masukkan ID akun in-game kamu</div>
+        <input type="text" id="uid-input" class="field-input"
+               placeholder="Contoh: 123456789 (1234)" autocomplete="off">
+      </div>
+
+      <!-- Server (untuk ML, dll) -->
+      <div id="server-field" class="field-wrap" style="display:none">
+        <label class="field-label" for="server-select">
+          🌐 Server
+        </label>
+        <select id="server-select" class="field-select">
+          <option value="">— Pilih Server —</option>
+          <option value="1">Server 1</option>
+          <option value="2">Server 2</option>
+          <option value="3">Server 3</option>
+        </select>
+      </div>
+
+      <!-- Pilih Nominal -->
+      <div class="field-wrap">
+        <label class="field-label">💎 Pilih Nominal</label>
+        <div class="nominal-grid" id="nominal-grid">
+          <!-- Diisi oleh renderDetailPage() -->
+          <div class="skeleton" style="height:80px;border-radius:16px"></div>
+          <div class="skeleton" style="height:80px;border-radius:16px"></div>
+          <div class="skeleton" style="height:80px;border-radius:16px"></div>
+          <div class="skeleton" style="height:80px;border-radius:16px"></div>
+        </div>
+      </div>
+
+      <!-- WhatsApp / Email (opsional) -->
+      <div class="field-wrap">
+        <label class="field-label" for="kontak-input">
+          📱 WhatsApp / Email <span style="color:var(--muted);font-weight:400">(opsional)</span>
+        </label>
+        <div class="field-sub">Untuk menerima notifikasi transaksi</div>
+        <input type="text" id="kontak-input" class="field-input"
+               placeholder="08xxxxxxxxxx atau email@..." autocomplete="off">
+      </div>
+
+      <!-- Summary Box -->
+      <div class="summary-box">
+        <div class="sum-row">
+          <span class="sum-label">Produk</span>
+          <span class="sum-val" id="sum-product">-</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Nominal</span>
+          <span class="sum-val" id="sum-nominal">Belum dipilih</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Harga</span>
+          <span class="sum-val" id="sum-price">—</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Biaya Admin</span>
+          <span class="sum-val" id="sum-admin">Rp1.000</span>
+        </div>
+        <div class="sum-row sum-total">
+          <span class="sum-label">Total Bayar</span>
+          <span class="sum-val" id="sum-total">—</span>
+        </div>
+      </div>
+
+      <div style="height:100px"></div>
+    </div>
+
+    <!-- CTA Bar Fixed -->
+    <div class="cta-bar">
+      <div class="price-row">
+        <span class="price-label">Total Bayar</span>
+        <span class="price-total" id="cta-total">—</span>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="lanjutCheckout()">
+        Lanjut Pembayaran →
+      </button>
+    </div>
+  </div>
+  <!-- /page-detail -->
+
+
+  <!-- ===================== PAGE: CHECKOUT ===================== -->
+  <div id="page-checkout" class="page no-bottom-nav">
+
+    <div class="dark-header">
+      <div class="page-header" style="padding:0 0 16px">
+        <button class="back-btn" onclick="history.back()" aria-label="Kembali">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+        <h1 style="color:white">Konfirmasi Order</h1>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step done">
+          <div class="step-num">✓</div>
+          <div class="step-label">Detail</div>
+        </div>
+        <div class="step-line done"></div>
+        <div class="step active">
+          <div class="step-num">2</div>
+          <div class="step-label">Bayar</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-label">Selesai</div>
+        </div>
+      </div>
+
+      <!-- Order Card di header -->
+      <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:36px" id="co-icon">🎮</div>
+        <div>
+          <div style="font-size:15px;font-weight:800;color:white" id="co-name">-</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.6)" id="co-nominal">-</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:20px">
+
+      <!-- Detail Order -->
+      <div style="background:white;border-radius:var(--radius);border:1.5px solid var(--line);padding:16px;margin-bottom:16px">
+        <h3 style="font-size:14px;font-weight:900;margin-bottom:12px">Detail Pesanan</h3>
+        <div class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">Produk</span>
+          <span style="font-size:13px;font-weight:700" id="co2-name">-</span>
+        </div>
+        <div class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">Nominal</span>
+          <span style="font-size:13px;font-weight:700" id="co2-nominal">-</span>
+        </div>
+        <div id="co2-uid-row" class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">User ID</span>
+          <span style="font-size:13px;font-weight:700" id="co2-uid">-</span>
+        </div>
+        <div id="co2-server-row" class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0;display:none">
+          <span style="font-size:13px;color:var(--muted)">Server</span>
+          <span style="font-size:13px;font-weight:700" id="co2-server">-</span>
+        </div>
+        <div class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">Harga</span>
+          <span style="font-size:13px;font-weight:700" id="co2-price">-</span>
+        </div>
+        <div class="sum-row" style="color:var(--ink);border-bottom:1px solid var(--line);padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">Biaya Admin</span>
+          <span style="font-size:13px;font-weight:700" id="co2-admin">Rp1.000</span>
+        </div>
+        <div class="sum-row" style="padding:12px 0 0">
+          <span style="font-size:14px;font-weight:700">Total Bayar</span>
+          <span style="font-size:18px;font-weight:900;color:var(--blue)" id="co2-total">-</span>
+        </div>
+      </div>
+
+      <!-- Pilih Metode Pembayaran -->
+      <h3 style="font-size:14px;font-weight:900;margin-bottom:12px">Metode Pembayaran</h3>
+      <div class="pay-list">
+        <div class="pay-item selected" data-method="qris">
+          <div class="pay-icon">📱</div>
+          <div class="pay-info">
+            <h4>QRIS</h4>
+            <p>GoPay, OVO, DANA, ShopeePay, dll</p>
+          </div>
+          <div class="pay-check"></div>
+        </div>
+        <div class="pay-item" data-method="bank_transfer">
+          <div class="pay-icon">🏦</div>
+          <div class="pay-info">
+            <h4>Transfer Bank</h4>
+            <p>BCA, BNI, BRI, Mandiri, Permata</p>
+          </div>
+          <div class="pay-check"></div>
+        </div>
+        <div class="pay-item" data-method="gopay">
+          <div class="pay-icon">💚</div>
+          <div class="pay-info">
+            <h4>GoPay / OVO / DANA</h4>
+            <p>Bayar langsung dari dompet digital</p>
+          </div>
+          <div class="pay-check"></div>
+        </div>
+      </div>
+
+      <div style="height:100px"></div>
+    </div>
+
+    <!-- CTA Bar Fixed -->
+    <div class="cta-bar">
+      <button class="btn btn-primary btn-full" onclick="prosesCheckout()">
+        🔒 Bayar Sekarang →
+      </button>
+    </div>
+  </div>
+  <!-- /page-checkout -->
+
+
+  <!-- ===================== PAGE: PAYMENT ===================== -->
+  <div id="page-payment" class="page no-bottom-nav">
+
+    <div class="dark-header">
+      <div class="page-header" style="padding:0 0 16px">
+        <button class="back-btn" onclick="navigate('#home')" aria-label="Kembali ke Beranda">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+        <h1 style="color:white">Menunggu Pembayaran</h1>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step done">
+          <div class="step-num">✓</div>
+          <div class="step-label">Detail</div>
+        </div>
+        <div class="step-line done"></div>
+        <div class="step done">
+          <div class="step-num">✓</div>
+          <div class="step-label">Bayar</div>
+        </div>
+        <div class="step-line done"></div>
+        <div class="step active">
+          <div class="step-num">3</div>
+          <div class="step-label">Selesai</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QRIS Box -->
+    <div class="qris-box">
+      <div class="qris-amount" id="pay-amount">—</div>
+      <div class="qris-timer" id="pay-timer">⏱ Menghitung...</div>
+
+      <!-- Progress bar -->
+      <div style="background:var(--line);border-radius:999px;height:4px;margin-bottom:20px">
+        <div id="pay-progress" style="height:4px;border-radius:999px;background:var(--cyan);width:100%;transition:width 1s linear"></div>
+      </div>
+
+      <div class="qris-frame">
+        <div>
+          <div style="font-size:32px;margin-bottom:8px">📱</div>
+          <div>QR Code muncul</div>
+          <div style="font-size:11px;margin-top:4px">dari Midtrans Snap</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px" id="pay-product">-</div>
+      <div style="font-size:11px;color:var(--muted)" id="pay-ordercode">-</div>
+    </div>
+
+    <!-- Cara Bayar -->
+    <div class="container">
+      <h3 style="font-size:14px;font-weight:900;margin:16px 0 12px">Cara Bayar QRIS:</h3>
+      <div class="info-steps">
+        <div class="info-step">
+          <div class="info-step-num">1</div>
+          <div class="info-step-text">
+            <h4>Buka aplikasi dompet digital</h4>
+            <p>GoPay, OVO, DANA, ShopeePay, atau mobile banking</p>
+          </div>
+        </div>
+        <div class="info-step">
+          <div class="info-step-num">2</div>
+          <div class="info-step-text">
+            <h4>Pilih "Bayar" atau "Scan QR"</h4>
+            <p>Arahkan kamera ke QR code di atas</p>
+          </div>
+        </div>
+        <div class="info-step">
+          <div class="info-step-num">3</div>
+          <div class="info-step-text">
+            <h4>Konfirmasi nominal pembayaran</h4>
+            <p>Pastikan jumlah sudah sesuai sebelum konfirmasi</p>
+          </div>
+        </div>
+        <div class="info-step">
+          <div class="info-step-num">4</div>
+          <div class="info-step-text">
+            <h4>Top up otomatis diproses</h4>
+            <p>Setelah pembayaran terverifikasi, top up diproses dalam 1–3 menit</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:16px;padding-bottom:32px">
+      <button class="btn btn-success btn-full" onclick="navigate('#success')" style="margin-bottom:10px">
+        ✅ Saya Sudah Bayar
+      </button>
+      <button class="btn btn-ghost btn-full" style="font-size:13px" onclick="navigate('#home')">
+        Batal & Kembali ke Beranda
+      </button>
+    </div>
+  </div>
+  <!-- /page-payment -->
+
+
+  <!-- ===================== PAGE: SUCCESS ===================== -->
+  <div id="page-success" class="page no-bottom-nav">
+
+    <!-- Header gradient -->
+    <div style="background:linear-gradient(160deg,#050814,#0e2a1a);padding:24px 16px 32px;text-align:center">
+      <!-- Lingkaran check animasi -->
+      <div class="success-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5" stroke-dasharray="50" stroke-dashoffset="50"
+                style="animation:checkDraw .5s .3s ease forwards"/>
+        </svg>
+      </div>
+      <h1 style="font-size:24px;font-weight:900;color:white;letter-spacing:-.04em;margin-bottom:8px">
+        Pembayaran Berhasil! 🎉
+      </h1>
+      <p style="font-size:14px;color:rgba(255,255,255,.6)">
+        Top up kamu sedang diproses
+      </p>
+    </div>
+
+    <div class="container" style="padding-top:20px">
+
+      <!-- Voucher Section (tampil jika ada kode voucher) -->
+      <div id="suc-voucher-section" style="display:none;margin-bottom:16px">
+        <div class="voucher-box">
+          <div style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:4px">🎁 Kode Voucher Kamu</div>
+          <div class="voucher-code" id="suc-voucher-code" onclick="salinTeks(this.textContent)">
+            XXXX-XXXX-XXXX
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:center">
+            Ketuk untuk menyalin
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Transaksi -->
+      <div style="background:white;border-radius:var(--radius);border:1.5px solid var(--line);padding:16px;margin-bottom:16px">
+        <h3 style="font-size:14px;font-weight:900;margin-bottom:12px">Detail Transaksi</h3>
+
+        <div class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">Order ID</span>
+          <span style="font-size:13px;font-weight:800;color:var(--blue);cursor:pointer" id="suc-ordercode"
+                onclick="salinTeks(this.textContent)">-</span>
+        </div>
+        <div class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">Produk</span>
+          <span style="font-size:13px;font-weight:700" id="suc-prod">-</span>
+        </div>
+        <div class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">Nominal</span>
+          <span style="font-size:13px;font-weight:700" id="suc-nom">-</span>
+        </div>
+        <div id="suc-uid-row" class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">User ID</span>
+          <span style="font-size:13px;font-weight:700" id="suc-uid">-</span>
+        </div>
+        <div class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">Total</span>
+          <span style="font-size:13px;font-weight:800;color:var(--blue)" id="suc-total">-</span>
+        </div>
+        <div class="sum-row" style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--muted)">Metode</span>
+          <span style="font-size:13px;font-weight:700" id="suc-method">-</span>
+        </div>
+        <div class="sum-row" style="padding:8px 0">
+          <span style="font-size:13px;color:var(--muted)">Waktu</span>
+          <span style="font-size:12px;font-weight:600;color:var(--muted)" id="suc-time">-</span>
+        </div>
+      </div>
+
+      <!-- Status info -->
+      <div style="background:rgba(22,199,132,.08);border:1px solid rgba(22,199,132,.2);border-radius:14px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:20px">⏳</span>
+        <div>
+          <h4 style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:4px">Top Up Diproses Otomatis</h4>
+          <p style="font-size:12px;color:var(--muted);line-height:1.5">Transaksi kamu akan diproses dalam 1–3 menit. Notifikasi akan dikirim ke WhatsApp/email kamu.</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <button class="btn btn-primary btn-full" onclick="navigate('#home')" style="margin-bottom:10px">
+        🏠 Top Up Lagi
+      </button>
+      <button class="btn btn-ghost btn-full" onclick="navigate('#history')">
+        📋 Lihat Riwayat Order
+      </button>
+
+      <div style="height:32px"></div>
+    </div>
+  </div>
+  <!-- /page-success -->
+
+
+  <!-- ===================== PAGE: HISTORY ===================== -->
+  <div id="page-history" class="page">
+
+    <div class="container" style="padding-top:20px">
+      <h1 style="font-size:22px;font-weight:900;letter-spacing:-.04em;margin-bottom:4px">Riwayat Order</h1>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:0">Semua transaksi kamu</p>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="filter-row">
+      <div class="filter-chip active" data-status="all" onclick="filterHistoryBy('all')">Semua</div>
+      <div class="filter-chip" data-status="success" onclick="filterHistoryBy('success')">✅ Sukses</div>
+      <div class="filter-chip" data-status="pending" onclick="filterHistoryBy('pending')">⏳ Pending</div>
+      <div class="filter-chip" data-status="failed" onclick="filterHistoryBy('failed')">❌ Gagal</div>
+    </div>
+
+    <!-- Order List -->
+    <div id="history-list" class="container" style="padding-top:8px">
+      <!-- Diisi oleh loadHistoryPage() -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="skeleton" style="height:90px;border-radius:18px"></div>
+        <div class="skeleton" style="height:90px;border-radius:18px"></div>
+        <div class="skeleton" style="height:90px;border-radius:18px"></div>
+      </div>
+    </div>
+  </div>
+  <!-- /page-history -->
+
+
+  <!-- ===================== PAGE: ACCOUNT ===================== -->
+  <div id="page-account" class="page">
+
+    <!-- Guest state -->
+    <div id="guest-body" style="display:none">
+      <div class="empty-state" style="padding-top:80px">
+        <div class="empty-state-icon">👤</div>
+        <h3>Belum Masuk</h3>
+        <p>Login untuk melihat riwayat dan mengelola akun kamu</p>
+        <button class="btn btn-primary btn-full" onclick="navigate('#login')" style="max-width:260px;margin:0 auto">
+          Masuk / Daftar
+        </button>
+      </div>
+    </div>
+
+    <!-- Logged in body -->
+    <div id="account-body">
+
+      <!-- Profile Header -->
+      <div class="dark-header" style="text-align:center;padding-bottom:24px">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));display:grid;place-items:center;margin:0 auto 12px;font-size:28px;font-weight:900;color:white" id="acc-avatar">U</div>
+        <h2 style="font-size:18px;font-weight:900;color:white;margin-bottom:4px" id="acc-name">Memuat...</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,.6)" id="acc-email">-</p>
+      </div>
+
+      <!-- Balance Card -->
+      <div class="balance-card">
+        <div class="balance-label">Saldo GUEDIGITAL</div>
+        <div class="balance-amount" id="acc-balance">Rp0</div>
+        <div class="balance-actions">
+          <button class="btn btn-sm" style="background:rgba(25,200,255,.15);color:var(--cyan);border:1px solid rgba(25,200,255,.3);border-radius:999px">
+            + Top Up
+          </button>
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.15);border-radius:999px">
+            Tarik Dana
+          </button>
+        </div>
+      </div>
+
+      <!-- Menu Cards -->
+      <div class="container" style="padding-top:16px">
+        <div class="acc-menu-card">
+          <div class="acc-menu-item" onclick="navigate('#history')">
+            <div class="acc-menu-icon">📋</div>
+            <span class="acc-menu-label">Riwayat Order</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+          <div class="acc-menu-item">
+            <div class="acc-menu-icon">🎁</div>
+            <span class="acc-menu-label">Voucher Saya</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+          <div class="acc-menu-item">
+            <div class="acc-menu-icon">🔔</div>
+            <span class="acc-menu-label">Notifikasi</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="acc-menu-card">
+          <div class="acc-menu-item">
+            <div class="acc-menu-icon">👤</div>
+            <span class="acc-menu-label">Edit Profil</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+          <div class="acc-menu-item">
+            <div class="acc-menu-icon">🔒</div>
+            <span class="acc-menu-label">Keamanan Akun</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+          <div class="acc-menu-item">
+            <div class="acc-menu-icon">❓</div>
+            <span class="acc-menu-label">Bantuan & FAQ</span>
+            <span class="acc-menu-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="acc-menu-card">
+          <div class="acc-menu-item" onclick="logout()">
+            <div class="acc-menu-icon" style="background:rgba(255,77,109,.1)">🚪</div>
+            <span class="acc-menu-label" style="color:var(--red)">Keluar</span>
+          </div>
+        </div>
+
+        <div style="text-align:center;padding:20px 0;color:var(--muted);font-size:11px">
+          GUEDIGITAL v1.0.0 · Made with ❤️
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /page-account -->
+
+
+  <!-- ===================== PAGE: LOGIN ===================== -->
+  <div id="page-login" class="page no-bottom-nav">
+
+    <div style="text-align:center;padding:48px 16px 32px">
+      <div class="brand-mark" style="margin:0 auto 16px;width:56px;height:56px;border-radius:18px;font-size:24px">G</div>
+      <h1 style="font-size:26px;font-weight:900;letter-spacing:-.04em;margin-bottom:6px">GUEDIGITAL</h1>
+      <p style="font-size:14px;color:var(--muted)">Top up game premium, harga terbaik</p>
+    </div>
+
+    <div class="container">
+      <!-- Auth Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login" onclick="tampilkanTabLogin()">Masuk</button>
+        <button class="auth-tab" data-tab="daftar" onclick="tampilkanTabDaftar()">Daftar</button>
+      </div>
+
+      <!-- Form Login -->
+      <form id="form-login" onsubmit="handleFormLogin(event)">
+        <div class="field-wrap">
+          <label class="field-label" for="inp-email-login">Email</label>
+          <input type="email" id="inp-email-login" class="field-input"
+                 placeholder="email@contoh.com" autocomplete="email" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="inp-pass-login">Password</label>
+          <input type="password" id="inp-pass-login" class="field-input"
+                 placeholder="Masukkan password" autocomplete="current-password" required>
+        </div>
+        <div style="text-align:right;margin-bottom:16px">
+          <span style="font-size:13px;font-weight:700;color:var(--blue);cursor:pointer">
+            Lupa Password?
+          </span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Masuk →</button>
+      </form>
+
+      <!-- Form Daftar -->
+      <form id="form-daftar" style="display:none" onsubmit="handleFormDaftar(event)">
+        <div class="field-wrap">
+          <label class="field-label" for="inp-nama-daftar">Nama Lengkap</label>
+          <input type="text" id="inp-nama-daftar" class="field-input"
+                 placeholder="Nama kamu" autocomplete="name" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="inp-email-daftar">Email</label>
+          <input type="email" id="inp-email-daftar" class="field-input"
+                 placeholder="email@contoh.com" autocomplete="email" required>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="inp-pass-daftar">Password</label>
+          <input type="password" id="inp-pass-daftar" class="field-input"
+                 placeholder="Min. 6 karakter" autocomplete="new-password" required minlength="6">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="inp-hp-daftar">
+            No. WhatsApp <span style="color:var(--muted);font-weight:400">(opsional)</span>
+          </label>
+          <input type="tel" id="inp-hp-daftar" class="field-input"
+                 placeholder="08xxxxxxxxxx" autocomplete="tel">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Daftar Gratis →</button>
+      </form>
+
+      <!-- Lanjutkan sebagai tamu -->
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-ghost" onclick="navigate('#home')" style="font-size:13px">
+          Lanjutkan sebagai tamu →
+        </button>
+      </div>
+
+      <div style="height:32px"></div>
+    </div>
+  </div>
+  <!-- /page-login -->
+
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="bn-item active" data-page="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Beranda
+    </button>
+    <button class="bn-item" data-page="history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+      </svg>
+      Riwayat
+    </button>
+    <button class="bn-item" data-page="account">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      Akun
+    </button>
+  </nav>
+
+</div>
+<!-- /app-shell -->
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);backdrop-filter:blur(6px);z-index:999;place-items:center">
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
+
+<!-- Midtrans Snap (Production) -->
+<script src="https://app.midtrans.com/snap/snap.js"
+        data-client-key="__MIDTRANS_CLIENT_KEY__" defer></script>
+
+<!-- App Scripts -->
+<script src="/assets/js/utils.js"></script>
+<script src="/assets/js/app.js" defer></script>
+<script src="/assets/js/auth.js" defer></script>
+<script src="/assets/js/products.js" defer></script>
+<script src="/assets/js/order.js" defer></script>
+<script src="/assets/js/payment.js" defer></script>
+<script src="/assets/js/history.js" defer></script>
+<script src="/assets/js/account.js" defer></script>
+
+</body>
+</html>
