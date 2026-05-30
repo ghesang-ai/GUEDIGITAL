@@ -9,30 +9,8 @@ const _sbAdmin = createAdminClient(
   window.__CONFIG__?.SUPABASE_ANON_KEY || ''
 );
 
-// Cek apakah user adalah admin
+// Auth check dinonaktifkan sementara
 async function checkAdminAuth() {
-  const { data: { session } } = await _sbAdmin.auth.getSession();
-  if (!session) {
-    window.location.href = '/admin/login.html';
-    return false;
-  }
-
-  // Cek is_admin dari tabel profiles
-  const { data: profile } = await _sbAdmin
-    .from('profiles')
-    .select('is_admin')
-    .eq('id', session.user.id)
-    .single();
-
-  const isAdmin = profile?.is_admin === true;
-
-  if (!isAdmin) {
-    alert('Akses ditolak. Kamu bukan admin.');
-    await _sbAdmin.auth.signOut();
-    window.location.href = '/';
-    return false;
-  }
-
   return true;
 }
 
