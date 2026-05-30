@@ -57,12 +57,17 @@ function renderProductCard(p) {
     ? formatRupiah(Math.min(...nominals.map(n => n.price)))
     : '-';
 
+  const imgContent = p.image_url
+    ? `<img src="${p.image_url}" alt="${escapeHtml(p.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:16px 16px 0 0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : '';
+
   return `
     <div class="pcard animate-fade" onclick="bukaDetailProduk(${p.id})"
          role="button" tabindex="0" aria-label="Top up ${escapeHtml(p.name)}">
-      <div class="pcard-img">
+      <div class="pcard-img" style="${p.image_url ? 'font-size:0;' : ''}">
         <span class="pbadge hot">HOT</span>
-        ${p.icon || '🎮'}
+        ${imgContent}
+        <span style="${p.image_url ? 'display:none;' : ''}">${p.icon || '🎮'}</span>
       </div>
       <h4>${escapeHtml(p.name)}</h4>
       <small>${escapeHtml(p.description || '')}</small>
@@ -80,7 +85,11 @@ function renderFeaturedStrip(p) {
   return `
     <div class="featured-strip animate-fade" onclick="bukaDetailProduk(${p.id})"
          role="button" tabindex="0" aria-label="Top up ${escapeHtml(p.name)}">
-      <div class="feat-icon">${p.icon || '🎮'}</div>
+      <div class="feat-icon" style="${p.image_url ? 'padding:0;overflow:hidden;' : ''}">
+        ${p.image_url
+          ? `<img src="${p.image_url}" alt="${escapeHtml(p.name)}" style="width:52px;height:52px;object-fit:cover;border-radius:12px;">`
+          : (p.icon || '🎮')}
+      </div>
       <div class="feat-info">
         <h4>${escapeHtml(p.name)}</h4>
         <p>${escapeHtml(p.description || '')}</p>

@@ -128,6 +128,7 @@
   </div>
 </div>
 
+<input type="file" id="inp-gambar-produk" accept="image/*" style="display:none">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/admin/admin.js" defer></script>
 <script>
@@ -153,16 +154,23 @@
       <div class="prod-card">
         <div class="prod-card-head">
           <div class="prod-card-info">
-            <div class="prod-icon">${p.icon || '🎮'}</div>
+            <div class="prod-icon" style="${p.image_url ? 'padding:0;overflow:hidden;' : ''}">
+              ${p.image_url
+                ? `<img src="${p.image_url}" style="width:52px;height:52px;object-fit:cover;border-radius:12px;" onerror="this.parentElement.innerHTML='${p.icon||'🎮'}'"/>`
+                : (p.icon || '🎮')}
+            </div>
             <div>
               <div class="prod-name">${escHtml(p.name)}</div>
               <div class="prod-cat">${p.category}</div>
             </div>
           </div>
-          <label class="toggle" title="${p.is_active ? 'Aktif' : 'Nonaktif'}">
-            <input type="checkbox" ${p.is_active ? 'checked' : ''} onchange="toggleProdukAktif(${p.id}, this.checked)">
-            <span class="toggle-slider"></span>
-          </label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn btn-ghost" style="padding:6px 10px;font-size:11px" onclick="uploadGambarProduk(${p.id})">🖼️ Gambar</button>
+            <label class="toggle" title="${p.is_active ? 'Aktif' : 'Nonaktif'}">
+              <input type="checkbox" ${p.is_active ? 'checked' : ''} onchange="toggleProdukAktif(${p.id}, this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
         </div>
         <table class="nom-table">
           <thead>
@@ -241,6 +249,36 @@
       loadAdminProducts();
     }
   }
+
+  // Upload gambar produk ke Supabase Storage
+  let _uploadProdukId = null;
+  function uploadGambarProduk(produkId) {
+    _uploadProdukId = produkId;
+    document.getElementById('inp-gambar-produk').click();
+  }
+
+  document.getElementById('inp-gambar-produk').addEventListener('change', async function() {
+    const file = this.files[0];
+    if (!file || !_uploadProdukId) return;
+
+    const ext = file.name.split('.').pop();
+    const path = `products/${_uploadProdukId}-${Date.now()}.${ext}`;
+
+    showAdminToast('Mengupload gambar...', 'info');
+
+    const { error: upErr } = await _sbAdmin.storage.from('public-image').upload(path, file, { upsert: true });
+    if (upErr) { showAdminToast('Gagal upload: ' + upErr.message, 'error'); return; }
+
+    const { data } = _sbAdmin.storage.from('public-image').getPublicUrl(path);
+    const publicUrl = data.publicUrl;
+
+    const { error: dbErr } = await _sbAdmin.from('products').update({ image_url: publicUrl }).eq('id', _uploadProdukId);
+    if (dbErr) { showAdminToast('Gagal simpan URL: ' + dbErr.message, 'error'); return; }
+
+    showAdminToast('Gambar berhasil diupload! ✓', 'success');
+    this.value = '';
+    loadAdminProducts();
+  });
 
   // Tutup modal jika klik overlay
   document.getElementById('modal-voucher')?.addEventListener('click', function(e) {
