@@ -132,14 +132,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/admin/admin.js" defer></script>
 <script>
-  // Override renderAdminProducts untuk tampilan grid yang lebih detail
-  async function loadAdminProducts() {
+  // Render produk lengkap dengan tabel edit nominal
+  function renderAdminProductsFull(produk) {
     const list = document.getElementById('admin-products-list');
     if (!list) return;
-    list.innerHTML = '<div style="height:200px;background:white;border-radius:16px;border:1.5px solid #e6ebf2;display:grid;place-items:center;color:#667085">Memuat...</div>';
-
-    const { data: produk } = await _sbAdmin.from('products').select('*, nominals(*)').order('sort_order');
-    if (!produk?.length) { list.innerHTML = '<p style="color:#667085">Belum ada produk.</p>'; return; }
 
     // Isi dropdown nominal untuk upload voucher
     const sel = document.getElementById('voucher-nominal-id');

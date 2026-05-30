@@ -123,6 +123,12 @@ async function loadAdminProducts() {
       return;
     }
 
+    // Render delegated ke products.html jika ada fungsi override
+    if (typeof renderAdminProductsFull === 'function') {
+      renderAdminProductsFull(produk);
+      return;
+    }
+
     list.innerHTML = produk.map(p => `
       <div class="admin-product-card" style="background:white;border:1.5px solid #e6ebf2;border-radius:16px;padding:16px;margin-bottom:12px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
