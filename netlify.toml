@@ -14,3 +14,7 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "APP_URL,APP_NAME,MIDTRANS_ENV"
+  SECRETS_SCAN_OMIT_PATHS = ".env.example,CLAUDE.md,supabase-setup.sql"
