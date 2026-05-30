@@ -17,9 +17,14 @@ async function checkAdminAuth() {
     return false;
   }
 
-  // Cek role admin dari metadata (set via Supabase dashboard)
-  const isAdmin = session.user.user_metadata?.role === 'admin' ||
-                  session.user.app_metadata?.role === 'admin';
+  // Cek is_admin dari tabel profiles
+  const { data: profile } = await _sbAdmin
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', session.user.id)
+    .single();
+
+  const isAdmin = profile?.is_admin === true;
 
   if (!isAdmin) {
     alert('Akses ditolak. Kamu bukan admin.');
