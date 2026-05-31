@@ -228,6 +228,15 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+/* Card sendirian jadi full-width */
+.product-grid .pcard:only-child,
+.product-grid .pcard:first-child:nth-last-child(1) {
+  grid-column: 1 / -1;
+}
+/* Kalau jumlah ganjil, card terakhir full-width */
+.product-grid .pcard:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
 .pcard {
   background: white;
   border-radius: var(--radius);
