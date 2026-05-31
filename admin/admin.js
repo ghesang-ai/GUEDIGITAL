@@ -161,17 +161,25 @@ async function loadAdminProducts() {
   }
 }
 
+// Helper: panggil admin-update Netlify Function (pakai service key server-side)
+async function adminUpdate(action, id, value) {
+  const res = await fetch('/.netlify/functions/admin-update', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, id, value })
+  });
+  const data = await res.json();
+  if (!res.ok || !data.ok) throw new Error(data.error || 'Gagal update');
+  return data;
+}
+
 // Toggle aktif/nonaktif produk
 async function toggleProdukAktif(productId, isActive) {
-  const { error } = await _sbAdmin
-    .from('products')
-    .update({ is_active: isActive })
-    .eq('id', productId);
-
-  if (error) {
-    alert('Gagal mengubah status produk.');
-  } else {
+  try {
+    await adminUpdate('toggle_product', productId, isActive);
     showAdminToast(isActive ? 'Produk diaktifkan' : 'Produk dinonaktifkan', 'success');
+  } catch (err) {
+    alert('Gagal mengubah status produk: ' + err.message);
   }
 }
 

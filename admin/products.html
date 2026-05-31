@@ -204,16 +204,22 @@
     const harga = parseInt(newPrice);
     if (isNaN(harga) || harga < 0) { showAdminToast('Harga tidak valid.', 'error'); return; }
 
-    const { error } = await _sbAdmin.from('nominals').update({ price: harga }).eq('id', nominalId);
-    if (error) showAdminToast('Gagal update harga.', 'error');
-    else showAdminToast('Harga diperbarui ✓', 'success');
+    try {
+      await adminUpdate('update_price', nominalId, harga);
+      showAdminToast('Harga diperbarui ✓', 'success');
+    } catch (err) {
+      showAdminToast('Gagal update harga: ' + err.message, 'error');
+    }
   }
 
   // Toggle aktif nominal
   async function toggleNominalAktif(nominalId, isActive) {
-    const { error } = await _sbAdmin.from('nominals').update({ is_active: isActive }).eq('id', nominalId);
-    if (error) showAdminToast('Gagal mengubah status nominal.', 'error');
-    else showAdminToast(isActive ? 'Nominal diaktifkan' : 'Nominal dinonaktifkan', 'success');
+    try {
+      await adminUpdate('toggle_nominal', nominalId, isActive);
+      showAdminToast(isActive ? 'Nominal diaktifkan' : 'Nominal dinonaktifkan', 'success');
+    } catch (err) {
+      showAdminToast('Gagal mengubah status nominal: ' + err.message, 'error');
+    }
   }
 
   // Modal upload voucher
